@@ -9,10 +9,9 @@ import { JSONViewer } from "./JSONViewer"
 import { CSVViewer } from "./CSVViewer"
 import { TextViewer } from "./TextViewer"
 import { FilePreviewHeader } from "./FilePreviewHeader"
-import { FilePreviewContainer } from "./FilePreviewContainer"
 import { Button } from "./ui/Button"
-import type { FilePreviewProps } from "../types"
 import { useFileContent } from "../hooks/useFileContent"
+import type { FilePreviewProps } from "../types"
 
 export function FilePreviewComponent({
   src,
@@ -53,11 +52,12 @@ export function FilePreviewComponent({
 
   // Image files
   if (["svg", "png", "jpg", "jpeg", "gif", "webp", "bmp", "ico"].includes(fileExtension)) {
+    const contentHeight = showFileName ? `calc(${height} - 48px)` : height
     return (
       <div className={`w-full ${className}`} style={{ height }}>
         {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
-        <div className="h-full">
-          <InteractiveImageViewer src={src} alt={fileName} onError={onError} onLoad={onLoad}/>
+        <div style={{ height: contentHeight }}>
+          <InteractiveImageViewer src={src} alt={fileName} onError={onError} onLoad={onLoad} />
         </div>
       </div>
     )
@@ -65,51 +65,64 @@ export function FilePreviewComponent({
 
   // Video files
   if (["mp4", "webm", "ogg", "avi", "mov"].includes(fileExtension)) {
+    const contentHeight = showFileName ? `calc(${height} - 48px)` : height
     return (
-      <FilePreviewContainer height={height} className={className}>
+      <div className={`w-full border rounded-lg overflow-hidden ${className}`} style={{ height }}>
         {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
-        <VideoViewer src={src} onError={onError} onLoad={onLoad} />
-      </FilePreviewContainer>
+        <div style={{ height: contentHeight }}>
+          <VideoViewer src={src} onError={onError} onLoad={onLoad} />
+        </div>
+      </div>
     )
   }
 
   // Audio files
   if (["mp3", "wav", "ogg", "aac", "m4a"].includes(fileExtension)) {
+    const contentHeight = showFileName ? `calc(${height} - 48px)` : height
     return (
-      <FilePreviewContainer height={height} className={className}>
+      <div className={`w-full border rounded-lg overflow-hidden ${className}`} style={{ height }}>
         {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
-        <AudioViewer src={src} fileName={fileName} onError={onError} onLoad={onLoad} />
-      </FilePreviewContainer>
+        <div style={{ height: contentHeight }}>
+          <AudioViewer src={src} fileName={fileName} onError={onError} onLoad={onLoad} />
+        </div>
+      </div>
     )
   }
 
   // PDF files
   if (fileExtension === "pdf") {
+    const contentHeight = showFileName ? `calc(${height} - 48px)` : height
     return (
-      <FilePreviewContainer height={height} className={className}>
+      <div className={`w-full border rounded-lg overflow-hidden ${className}`} style={{ height }}>
         {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
-        <PDFViewer src={src} onError={onError} onLoad={onLoad} />
-      </FilePreviewContainer>
+        <div style={{ height: contentHeight }}>
+          <PDFViewer src={src} onError={onError} onLoad={onLoad} />
+        </div>
+      </div>
     )
   }
 
   // Office files
   if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(fileExtension)) {
+    const contentHeight = showFileName ? `calc(${height} - 48px)` : height
     return (
-      <FilePreviewContainer height={height} className={className}>
+      <div className={`w-full border rounded-lg overflow-hidden ${className}`} style={{ height }}>
         {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
-        <OfficeViewer src={src} onError={onError} onLoad={onLoad} />
-      </FilePreviewContainer>
+        <div style={{ height: contentHeight }}>
+          <OfficeViewer src={src} onError={onError} onLoad={onLoad} />
+        </div>
+      </div>
     )
   }
 
   // Text-based files
   if (shouldFetchContent) {
+    const contentHeight = showFileName ? `calc(${height} - 48px)` : height
     return (
-      <FilePreviewContainer height={height} className={className}>
+      <div className={`w-full border rounded-lg overflow-hidden ${className}`} style={{ height }}>
         {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
 
-        <div className="p-4 h-full overflow-auto">
+        <div className="overflow-auto" style={{ height: contentHeight }}>
           {loading && (
             <div className="flex items-center justify-center h-full">
               <div className="text-gray-500">Loading file content...</div>
@@ -117,7 +130,7 @@ export function FilePreviewComponent({
           )}
 
           {error && (
-            <div className="flex flex-col items-center justify-center h-full space-y-4">
+            <div className="flex flex-col items-center justify-center h-full space-y-4 p-4">
               <AlertCircle className="w-12 h-12 text-red-500" />
               <div className="text-red-500 text-center">Error loading file: {error}</div>
               {showDownloadButton && (
@@ -130,25 +143,26 @@ export function FilePreviewComponent({
           )}
 
           {!loading && !error && content && (
-            <>
+            <div className="p-4">
               {fileExtension === "json" && <JSONViewer content={content} />}
               {fileExtension === "csv" && <CSVViewer content={content} />}
               {!["json", "csv"].includes(fileExtension) && (
                 <TextViewer content={content} fileExtension={fileExtension} />
               )}
-            </>
+            </div>
           )}
         </div>
-      </FilePreviewContainer>
+      </div>
     )
   }
 
   // Fallback for unsupported files
+  const contentHeight = showFileName ? `calc(${height} - 48px)` : height
   return (
-    <FilePreviewContainer height={height} className={className}>
+    <div className={`w-full border rounded-lg overflow-hidden ${className}`} style={{ height }}>
       {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
 
-      <div className="flex flex-col items-center justify-center h-full space-y-4 p-4">
+      <div className="flex flex-col items-center justify-center space-y-4 p-4" style={{ height: contentHeight }}>
         <FileText className="w-16 h-16 text-gray-400" />
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2">{fileName}</h3>
@@ -166,6 +180,6 @@ export function FilePreviewComponent({
           )}
         </div>
       </div>
-    </FilePreviewContainer>
+    </div>
   )
 }
