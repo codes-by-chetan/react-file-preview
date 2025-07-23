@@ -8,6 +8,11 @@ export function OfficeViewer({ src, className = "", onError, onLoad }: OfficeVie
       title="Office Document Viewer"
       onLoad={onLoad}
       onError={() => onError?.("Failed to load Office document")}
+      allow="fullscreen"
+      loading="lazy"
+      style={{
+        minHeight: "200px",
+      }}
     />
   )
 }

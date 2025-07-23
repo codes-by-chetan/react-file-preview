@@ -7,7 +7,7 @@ export function FilePreviewContainer({ children, height = "400px", className = "
       style={{
         height,
         minHeight: "200px",
-        maxHeight: "90vh", // Prevent overflow on small screens
+        maxHeight: "90vh",
       }}
     >
       {children}

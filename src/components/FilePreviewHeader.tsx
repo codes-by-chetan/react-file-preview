@@ -11,7 +11,10 @@ export function FilePreviewHeader({
   className = "",
 }: FilePreviewHeaderProps) {
   return (
-    <div className={`flex items-center justify-between p-2 sm:p-3 bg-gray-50 border-b ${className}`}>
+    <div
+      className={`flex items-center justify-between p-2 sm:p-3 bg-gray-50 border-b ${className}`}
+      style={{ height: "48px" }}
+    >
       <span className="text-xs sm:text-sm font-medium truncate pr-2 flex-1 min-w-0">{fileName}</span>
       {showDownloadButton && (
         <Button

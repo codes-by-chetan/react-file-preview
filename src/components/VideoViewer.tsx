@@ -13,6 +13,7 @@ export function VideoViewer({ src, className = "", onError, onLoad }: VideoViewe
         style={{
           maxHeight: "100%",
           maxWidth: "100%",
+
         }}
       >
         Your browser does not support the video tag.

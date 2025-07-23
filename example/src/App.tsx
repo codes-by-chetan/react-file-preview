@@ -2,6 +2,7 @@ import {
   FilePreviewComponent,
   InteractiveImageViewer,
   PDFViewer,
+  OfficeViewer,
   VideoViewer,
   FilePreviewHeader,
   FilePreviewContainer,
@@ -59,18 +60,24 @@ function App() {
         <section>
           <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">All-in-One File Preview</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            {sampleFiles.map((file, index) => (
-              <div key={index} className="border rounded-lg p-3 sm:p-4 shadow-sm">
-                <h3 className="text-base sm:text-lg font-medium mb-3">{file.name}</h3>
-                <FilePreviewComponent
-                  src={file.url}
-                  fileName={file.name}
-                  height="350px"
-                  onError={(error) => console.error("Error:", error)}
-                  onLoad={() => console.log("Loaded:", file.name)}
-                />
-              </div>
-            ))}
+            {sampleFiles.map((file, index) => {
+              // Use appropriate heights for different file types
+              let height = "300px"
+              
+
+              return (
+                <div key={index} className="border rounded-lg p-3 sm:p-4 shadow-sm">
+                  <h3 className="text-base sm:text-lg font-medium mb-3">{file.name}</h3>
+                  <FilePreviewComponent
+                    src={file.url}
+                    fileName={file.name}
+                    height={height}
+                    onError={(error:any) => console.error("Error:", error)}
+                    onLoad={() => console.log("Loaded:", file.name)}
+                  />
+                </div>
+              )
+            })}
           </div>
         </section>
 
@@ -91,26 +98,30 @@ function App() {
           {/* Custom PDF Viewer with Header */}
           <div className="mb-6 sm:mb-8">
             <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">Custom PDF Viewer with Header</h3>
-            <FilePreviewContainer height="300px">
+            <FilePreviewContainer height="500px">
               <FilePreviewHeader
                 fileName="sample-document.pdf"
                 src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
                 showDownloadButton={true}
               />
-              <PDFViewer src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" />
+              <div style={{ height: "calc(100% - 48px)" }}>
+                <PDFViewer src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" />
+              </div>
             </FilePreviewContainer>
           </div>
 
           {/* Custom PowerPoint Viewer */}
           <div className="mb-6 sm:mb-8">
-            <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">PowerPoint Viewer</h3>
-            <FilePreviewContainer height="350px">
+            <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">PowerPoint Viewer (Using OfficeViewer)</h3>
+            <FilePreviewContainer height="500px">
               <FilePreviewHeader
                 fileName="sample-presentation.ppt"
                 src="https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-example-ppt-250kb-1752141006535.ppt"
                 showDownloadButton={true}
               />
-              <PDFViewer src="https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-example-ppt-250kb-1752141006535.ppt" />
+              <div style={{ height: "calc(100% - 48px)" }}>
+                <OfficeViewer src="https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-example-ppt-250kb-1752141006535.ppt" />
+              </div>
             </FilePreviewContainer>
           </div>
 
@@ -137,44 +148,56 @@ function App() {
           </div>
         </section>
 
-        {/* Mobile-Optimized Examples */}
+        {/* Document-Focused Examples */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Mobile-Optimized Examples</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Document Viewers (Optimized Heights)</h2>
 
-          <div className="space-y-4 sm:space-y-6">
-            {/* Compact Image Viewer */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* PDF with optimal height */}
             <div>
-              <h3 className="text-lg font-medium mb-3">Compact Image Viewer</h3>
-              <FilePreviewContainer height="200px">
-                <FilePreviewHeader
-                  fileName="mobile-optimized-image.jpg"
-                  src="https://picsum.photos/600/400"
-                  showDownloadButton={true}
-                />
-                <InteractiveImageViewer src="https://picsum.photos/600/400" alt="Mobile optimized image" />
+              <h3 className="text-lg font-medium mb-3">PDF Document (600px height)</h3>
+              <FilePreviewComponent
+                src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                fileName="optimized-document.pdf"
+                height="600px"
+              />
+            </div>
+
+            {/* PowerPoint with optimal height */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">PowerPoint Presentation (600px height)</h3>
+              <FilePreviewComponent
+                src="https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-example-ppt-250kb-1752141006535.ppt"
+                fileName="optimized-presentation.ppt"
+                height="600px"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Viewer Comparison */}
+        <section>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Viewer Comparison</h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* PDF using PDFViewer */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">PDF using PDFViewer (Google Docs)</h3>
+              <FilePreviewContainer height="500px">
+                <FilePreviewHeader fileName="document.pdf" src="#" />
+                <div style={{ height: "calc(100% - 48px)" }}>
+                  <PDFViewer src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" />
+                </div>
               </FilePreviewContainer>
             </div>
 
-            {/* Responsive Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              <FilePreviewContainer height="180px">
-                <FilePreviewHeader fileName="doc1.pdf" src="#" />
-                <div className="flex items-center justify-center h-full bg-gray-100 text-gray-500 text-sm">
-                  PDF Preview
-                </div>
-              </FilePreviewContainer>
-
-              <FilePreviewContainer height="180px">
-                <FilePreviewHeader fileName="image.jpg" src="#" />
-                <div className="flex items-center justify-center h-full bg-gray-100 text-gray-500 text-sm">
-                  Image Preview
-                </div>
-              </FilePreviewContainer>
-
-              <FilePreviewContainer height="180px" className="sm:col-span-2 lg:col-span-1">
-                <FilePreviewHeader fileName="video.mp4" src="#" />
-                <div className="flex items-center justify-center h-full bg-gray-100 text-gray-500 text-sm">
-                  Video Preview
+            {/* PPT using OfficeViewer */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">PPT using OfficeViewer (Office Online)</h3>
+              <FilePreviewContainer height="500px">
+                <FilePreviewHeader fileName="presentation.ppt" src="#" />
+                <div style={{ height: "calc(100% - 48px)" }}>
+                  <OfficeViewer src="https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-example-ppt-250kb-1752141006535.ppt" />
                 </div>
               </FilePreviewContainer>
             </div>

@@ -8,6 +8,11 @@ export function PDFViewer({ src, className = "", onError, onLoad }: PDFViewerPro
       title="PDF Viewer"
       onLoad={onLoad}
       onError={() => onError?.("Failed to load PDF")}
+      allow="fullscreen"
+      loading="lazy"
+      style={{
+        minHeight: "200px",
+      }}
     />
   )
 }
