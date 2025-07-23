@@ -15,6 +15,8 @@ import type { FilePreviewProps } from "../types"
 
 export function FilePreviewComponent({
   src,
+  blob,
+  content,
   fileName,
   className = "",
   showDownloadButton = true,
@@ -47,20 +49,35 @@ export function FilePreviewComponent({
     "log",
   ]
 
-  const shouldFetchContent = textExtensions.includes(fileExtension)
-  const { content, loading, error } = useFileContent(src, shouldFetchContent, onError, onLoad)
+  const shouldFetchContent = textExtensions.includes(fileExtension) && !content && !blob
+  const { content: fetchedContent, loading, error } = useFileContent(src || "", shouldFetchContent, onError, onLoad)
+
+  // Determine the actual content to use
+  const actualContent = content || fetchedContent
 
   // Calculate content height accounting for header
   const headerHeight = showFileName ? 48 : 0
   const contentHeight = `calc(${height} - ${headerHeight}px)`
 
+  // Get download URL
+  const downloadUrl = src || (blob ? URL.createObjectURL(blob) : "")
+
   // Image files
   if (["svg", "png", "jpg", "jpeg", "gif", "webp", "bmp", "ico"].includes(fileExtension)) {
     return (
       <div className={`w-full ${className}`} style={{ height }}>
-        {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+        {showFileName && (
+          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+        )}
         <div style={{ height: contentHeight }}>
-          <InteractiveImageViewer src={src} alt={fileName} onError={onError} onLoad={onLoad} />
+          <InteractiveImageViewer
+            src={src}
+            blob={blob}
+            content={content}
+            alt={fileName}
+            onError={onError}
+            onLoad={onLoad}
+          />
         </div>
       </div>
     )
@@ -70,9 +87,11 @@ export function FilePreviewComponent({
   if (["mp4", "webm", "ogg", "avi", "mov"].includes(fileExtension)) {
     return (
       <div className={`w-full border rounded-lg ${className}`} style={{ height }}>
-        {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+        {showFileName && (
+          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+        )}
         <div style={{ height: contentHeight }}>
-          <VideoViewer src={src} onError={onError} onLoad={onLoad} />
+          <VideoViewer src={src} blob={blob} content={content} onError={onError} onLoad={onLoad} />
         </div>
       </div>
     )
@@ -82,9 +101,11 @@ export function FilePreviewComponent({
   if (["mp3", "wav", "ogg", "aac", "m4a"].includes(fileExtension)) {
     return (
       <div className={`w-full border rounded-lg ${className}`} style={{ height }}>
-        {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+        {showFileName && (
+          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+        )}
         <div style={{ height: contentHeight }}>
-          <AudioViewer src={src} fileName={fileName} onError={onError} onLoad={onLoad} />
+          <AudioViewer src={src} blob={blob} content={content} fileName={fileName} onError={onError} onLoad={onLoad} />
         </div>
       </div>
     )
@@ -94,31 +115,37 @@ export function FilePreviewComponent({
   if (fileExtension === "pdf") {
     return (
       <div className={`w-full border rounded-lg ${className}`} style={{ height }}>
-        {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+        {showFileName && (
+          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+        )}
         <div style={{ height: contentHeight }}>
-          <PDFViewer src={src} onError={onError} onLoad={onLoad} />
+          <PDFViewer src={src} blob={blob} content={content} onError={onError} onLoad={onLoad} />
         </div>
       </div>
     )
   }
 
-  // Office files - FIXED: Now using OfficeViewer for PPT files!
+  // Office files
   if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(fileExtension)) {
     return (
       <div className={`w-full border rounded-lg ${className}`} style={{ height }}>
-        {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+        {showFileName && (
+          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+        )}
         <div style={{ height: contentHeight }}>
-          <OfficeViewer src={src} onError={onError} onLoad={onLoad} />
+          <OfficeViewer src={src} blob={blob} content={content} onError={onError} onLoad={onLoad} />
         </div>
       </div>
     )
   }
 
   // Text-based files
-  if (shouldFetchContent) {
+  if (shouldFetchContent || actualContent) {
     return (
       <div className={`w-full border rounded-lg ${className}`} style={{ height }}>
-        {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+        {showFileName && (
+          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+        )}
 
         <div className="overflow-auto" style={{ height: contentHeight }}>
           {loading && (
@@ -131,8 +158,8 @@ export function FilePreviewComponent({
             <div className="flex flex-col items-center justify-center h-full space-y-4 p-4">
               <AlertCircle className="w-12 h-12 text-red-500" />
               <div className="text-red-500 text-center">Error loading file: {error}</div>
-              {showDownloadButton && (
-                <Button variant="outline" onClick={() => window.open(src, "_blank")}>
+              {showDownloadButton && downloadUrl && (
+                <Button variant="outline" onClick={() => window.open(downloadUrl, "_blank")}>
                   <Download className="w-4 h-4 mr-2" />
                   Download File
                 </Button>
@@ -140,12 +167,12 @@ export function FilePreviewComponent({
             </div>
           )}
 
-          {!loading && !error && content && (
+          {!loading && !error && actualContent && (
             <div className="p-4">
-              {fileExtension === "json" && <JSONViewer content={content} />}
-              {fileExtension === "csv" && <CSVViewer content={content} />}
+              {fileExtension === "json" && <JSONViewer content={actualContent} />}
+              {fileExtension === "csv" && <CSVViewer content={actualContent} />}
               {!["json", "csv"].includes(fileExtension) && (
-                <TextViewer content={content} fileExtension={fileExtension} />
+                <TextViewer content={actualContent} fileExtension={fileExtension} />
               )}
             </div>
           )}
@@ -157,20 +184,22 @@ export function FilePreviewComponent({
   // Fallback for unsupported files
   return (
     <div className={`w-full border rounded-lg ${className}`} style={{ height }}>
-      {showFileName && <FilePreviewHeader fileName={fileName} src={src} showDownloadButton={showDownloadButton} />}
+      {showFileName && (
+        <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+      )}
 
       <div className="flex flex-col items-center justify-center space-y-4 p-4" style={{ height: contentHeight }}>
         <FileText className="w-16 h-16 text-gray-400" />
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2">{fileName}</h3>
           <p className="text-gray-500 mb-4">Preview not available for .{fileExtension} files</p>
-          {showDownloadButton && (
+          {showDownloadButton && downloadUrl && (
             <div className="space-x-2">
-              <Button variant="outline" onClick={() => window.open(src, "_blank")}>
+              <Button variant="outline" onClick={() => window.open(downloadUrl, "_blank")}>
                 <Download className="w-4 h-4 mr-2" />
                 Download
               </Button>
-              <Button variant="outline" onClick={() => window.open(src, "_blank")}>
+              <Button variant="outline" onClick={() => window.open(downloadUrl, "_blank")}>
                 Open in New Tab
               </Button>
             </div>
