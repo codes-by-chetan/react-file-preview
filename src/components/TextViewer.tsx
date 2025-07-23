@@ -1,33 +1,41 @@
+import { MarkdownViewer } from "./MarkdownViewer"
+import { CodeViewer } from "./CodeViewer"
 import type { TextViewerProps } from "../types"
 
 export function TextViewer({ content, fileExtension, className = "" }: TextViewerProps) {
-  const getLanguage = (ext: string) => {
-    const languageMap: { [key: string]: string } = {
-      js: "javascript",
-      jsx: "javascript",
-      ts: "typescript",
-      tsx: "typescript",
-      py: "python",
-      java: "java",
-      cpp: "cpp",
-      c: "c",
-      css: "css",
-      html: "html",
-      xml: "xml",
-      sql: "sql",
-      md: "markdown",
-      yml: "yaml",
-      yaml: "yaml",
-    }
-    return languageMap[ext] || "text"
+  // Use MarkdownViewer for markdown files
+  if (fileExtension === "md" || fileExtension === "markdown") {
+    return <MarkdownViewer content={content} className={className} />
   }
 
+  // Use CodeViewer for code files
+  const codeExtensions = [
+    "js",
+    "jsx",
+    "ts",
+    "tsx",
+    "py",
+    "java",
+    "cpp",
+    "c",
+    "css",
+    "html",
+    "xml",
+    "sql",
+    "yml",
+    "yaml",
+  ]
+  if (codeExtensions.includes(fileExtension)) {
+    return <CodeViewer content={content} language={fileExtension} className={className} />
+  }
+
+  // Fallback to simple text viewer
   return (
     <div
       className={`bg-gray-50 rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm overflow-auto border max-h-96 ${className}`}
     >
       <pre className="whitespace-pre-wrap break-words">
-        <code className={`language-${getLanguage(fileExtension)}`}>{content}</code>
+        <code>{content}</code>
       </pre>
     </div>
   )

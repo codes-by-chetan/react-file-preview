@@ -10,6 +10,8 @@ export { OfficeViewer } from "./components/OfficeViewer"
 export { TextViewer } from "./components/TextViewer"
 export { JSONViewer } from "./components/JSONViewer"
 export { CSVViewer } from "./components/CSVViewer"
+export { MarkdownViewer } from "./components/MarkdownViewer"
+export { CodeViewer } from "./components/CodeViewer"
 
 // Layout components
 export { FilePreviewHeader } from "./components/FilePreviewHeader"

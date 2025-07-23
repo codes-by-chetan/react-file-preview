@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   FilePreviewComponent,
   InteractiveImageViewer,
@@ -62,121 +62,497 @@ const jsonContent = `{
     {
       "name": "E-commerce Platform",
       "status": "completed",
-      "technologies": ["React", "Node.js", "MongoDB"]
+      "technologies": ["React", "Node.js", "MongoDB"],
+      "startDate": "2023-01-15",
+      "endDate": "2023-06-30",
+      "budget": 50000
     },
     {
       "name": "Mobile App",
       "status": "in-progress",
-      "technologies": ["React Native", "Firebase"]
+      "technologies": ["React Native", "Firebase"],
+      "startDate": "2023-07-01",
+      "endDate": null,
+      "budget": 75000
+    },
+    {
+      "name": "Data Analytics Dashboard",
+      "status": "planning",
+      "technologies": ["Python", "Django", "PostgreSQL"],
+      "startDate": "2024-01-01",
+      "endDate": "2024-08-31",
+      "budget": 100000
     }
-  ]
+  ],
+  "preferences": {
+    "theme": "dark",
+    "notifications": true,
+    "language": "en-US"
+  }
 }`
 
-const csvContent = `Name,Age,City,Occupation,Salary,Department,Start Date
-John Doe,30,New York,Software Engineer,75000,Engineering,2020-01-15
-Jane Smith,25,Los Angeles,Designer,65000,Design,2021-03-22
-Bob Johnson,35,Chicago,Manager,85000,Management,2019-07-10
-Alice Brown,28,Seattle,Developer,70000,Engineering,2020-11-05
-Charlie Wilson,32,Boston,Analyst,68000,Analytics,2021-01-20
-Diana Davis,29,Austin,Product Manager,78000,Product,2020-05-18`
+const csvContent = `Name,Age,City,Occupation,Salary,Department,Start Date,Performance Rating,Projects Completed,Skills
+John Doe,30,New York,Software Engineer,75000,Engineering,2020-01-15,4.5,12,"JavaScript,React,Node.js"
+Jane Smith,25,Los Angeles,Designer,65000,Design,2021-03-22,4.8,8,"Figma,Photoshop,Illustrator"
+Bob Johnson,35,Chicago,Manager,85000,Management,2019-07-10,4.2,15,"Leadership,Strategy,Communication"
+Alice Brown,28,Seattle,Developer,70000,Engineering,2020-11-05,4.7,10,"Python,Django,PostgreSQL"
+Charlie Wilson,32,Boston,Analyst,68000,Analytics,2021-01-20,4.3,6,"SQL,Tableau,Excel"
+Diana Davis,29,Austin,Product Manager,78000,Product,2020-05-18,4.6,9,"Product Strategy,Agile,Scrum"
+Eve Martinez,26,San Francisco,Frontend Developer,72000,Engineering,2021-08-12,4.9,7,"React,Vue.js,TypeScript"
+Frank Garcia,33,Miami,Backend Developer,74000,Engineering,2019-12-03,4.4,11,"Java,Spring,MySQL"
+Grace Lee,31,Portland,UX Designer,69000,Design,2020-09-14,4.5,5,"User Research,Wireframing,Prototyping"
+Henry Kim,27,Denver,DevOps Engineer,76000,Engineering,2021-04-07,4.6,8,"Docker,Kubernetes,AWS"`
 
-const textContent = `# Sample Markdown File
+const markdownContent = `# React File Preview Package
 
-This is a **sample markdown** file to demonstrate text viewing capabilities.
+A comprehensive file preview component library for React applications.
 
 ## Features
 
-- Syntax highlighting
-- Code blocks
-- Lists and formatting
+### Image Viewer
+- **Interactive Controls**: Zoom in/out, pan, reset view
+- **Touch Support**: Pinch to zoom, drag to pan
+- **Customizable**: Hide/show individual controls
+- **External State**: Control zoom and pan from parent component
 
-\`\`\`javascript
-function hello() {
-  console.log("Hello, World!");
+### Video & Audio Players
+- **Custom Controls**: Show/hide player controls
+- **Event Callbacks**: Handle play, pause, time updates
+- **Multiple Formats**: Support for various media formats
+
+### Document Viewers
+- **PDF Support**: Embedded PDF viewing
+- **Office Documents**: Word, Excel, PowerPoint support
+- **Text Files**: Syntax highlighting for code files
+
+## Installation
+
+\`\`\`bash
+npm install react-file-preview
+# or
+yarn add react-file-preview
+\`\`\`
+
+## Usage
+
+### Basic Image Viewer
+
+\`\`\`jsx
+import { InteractiveImageViewer } from 'react-file-preview'
+
+function App() {
+  return (
+    <InteractiveImageViewer
+      src="https://example.com/image.jpg"
+      alt="Sample image"
+      controls={{
+        showControls: true,
+        allowZoom: true,
+        allowPan: true
+      }}
+    />
+  )
 }
 \`\`\`
 
-## Code Example
+### Controlled Image Viewer
 
-Here's some Python code:
+\`\`\`jsx
+import { useState } from 'react'
+import { InteractiveImageViewer } from 'react-file-preview'
 
-\`\`\`python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
+function ControlledViewer() {
+  const [zoom, setZoom] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
 
-print(fibonacci(10))
+  return (
+    <InteractiveImageViewer
+      src="image.jpg"
+      zoom={zoom}
+      onZoomChange={setZoom}
+      pan={pan}
+      onPanChange={setPan}
+      methods={{
+        onZoomIn: () => console.log('Zoomed in'),
+        onZoomOut: () => console.log('Zoomed out')
+      }}
+    />
+  )
+}
 \`\`\`
 
-### Lists
+### Video Player
 
-1. First item
-2. Second item
-3. Third item
+\`\`\`jsx
+import { VideoViewer } from 'react-file-preview'
 
-- Bullet point 1
-- Bullet point 2
-- Bullet point 3
+function VideoPlayer() {
+  return (
+    <VideoViewer
+      src="video.mp4"
+      controls={{
+        showControls: true,
+        autoPlay: false,
+        loop: false
+      }}
+      methods={{
+        onPlay: () => console.log('Video started'),
+        onPause: () => console.log('Video paused')
+      }}
+    />
+  )
+}
+\`\`\`
 
-> This is a blockquote example.
+## API Reference
 
-**Bold text** and *italic text* examples.`
+### InteractiveImageViewer Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| \`src\` | string | - | Image URL |
+| \`controls\` | object | \`{}\` | Control configuration |
+| \`zoom\` | number | - | External zoom control |
+| \`onZoomChange\` | function | - | Zoom change callback |
+
+### Control Configuration
+
+\`\`\`typescript
+interface ImageControlsConfig {
+  showControls?: boolean
+  showZoomIn?: boolean
+  showZoomOut?: boolean
+  showReset?: boolean
+  showFitToScreen?: boolean
+  allowPan?: boolean
+  allowZoom?: boolean
+}
+\`\`\`
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (\`git checkout -b feature/amazing-feature\`)
+3. Commit your changes (\`git commit -m 'Add some amazing feature'\`)
+4. Push to the branch (\`git push origin feature/amazing-feature\`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+> **Note**: This package is actively maintained and we welcome contributions!
+`
+
+const javascriptCode = `// React File Preview - Interactive Image Viewer
+import React, { useState, useCallback, useEffect } from 'react'
+
+const InteractiveImageViewer = ({
+  src,
+  alt = "Image",
+  controls = {},
+  zoom: externalZoom,
+  onZoomChange,
+  methods = {}
+}) => {
+  const [internalZoom, setInternalZoom] = useState(1)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+
+  // Use external zoom if provided, otherwise internal
+  const currentZoom = externalZoom !== undefined ? externalZoom : internalZoom
+
+  const updateZoom = useCallback((newZoom) => {
+    const clampedZoom = Math.max(0.1, Math.min(5, newZoom))
+    
+    if (externalZoom !== undefined) {
+      onZoomChange?.(clampedZoom)
+    } else {
+      setInternalZoom(clampedZoom)
+    }
+    
+    methods.onZoomChange?.(clampedZoom)
+  }, [externalZoom, onZoomChange, methods])
+
+  const handleZoomIn = () => {
+    methods.onZoomIn?.()
+    updateZoom(currentZoom + 0.2)
+  }
+
+  const handleZoomOut = () => {
+    methods.onZoomOut?.()
+    updateZoom(currentZoom - 0.2)
+  }
+
+  const handleReset = () => {
+    methods.onReset?.()
+    updateZoom(1)
+    setOffset({ x: 0, y: 0 })
+  }
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      {/* Image Canvas */}
+      <canvas
+        className="w-full h-full cursor-grab"
+        style={{
+          cursor: isDragging ? 'grabbing' : 'grab'
+        }}
+      />
+      
+      {/* Controls */}
+      {controls.showControls && (
+        <div className="absolute top-4 right-4 flex flex-col gap-2">
+          <button onClick={handleZoomIn}>Zoom In</button>
+          <button onClick={handleZoomOut}>Zoom Out</button>
+          <button onClick={handleReset}>Reset</button>
+        </div>
+      )}
+      
+      {/* Zoom Indicator */}
+      <div className="absolute bottom-4 right-4 bg-black/70 text-white px-2 py-1 rounded">
+        {Math.round(currentZoom * 100)}%
+      </div>
+    </div>
+  )
+}
+
+export default InteractiveImageViewer`
+
+const typescriptCode = `// TypeScript interfaces for React File Preview
+interface ImageControlsConfig {
+  showControls?: boolean
+  showZoomIn?: boolean
+  showZoomOut?: boolean
+  showReset?: boolean
+  showFitToScreen?: boolean
+  allowPan?: boolean
+  allowZoom?: boolean
+}
+
+interface ImageViewerMethods {
+  onZoomIn?: () => void
+  onZoomOut?: () => void
+  onReset?: () => void
+  onFitToScreen?: () => void
+  onZoomChange?: (zoom: number) => void
+  onPanChange?: (offset: { x: number; y: number }) => void
+}
+
+interface InteractiveImageViewerProps {
+  src?: string
+  blob?: Blob
+  content?: string
+  alt?: string
+  className?: string
+  controls?: ImageControlsConfig
+  zoom?: number
+  onZoomChange?: (zoom: number) => void
+  pan?: { x: number; y: number }
+  onPanChange?: (offset: { x: number; y: number }) => void
+  methods?: ImageViewerMethods
+  onError?: (error: string) => void
+  onLoad?: () => void
+}
+
+// Generic content source interface
+interface ContentSource {
+  src?: string
+  blob?: Blob
+  content?: string
+}
+
+// Base viewer props
+interface BaseViewerProps {
+  className?: string
+  onError?: (error: string) => void
+  onLoad?: () => void
+}
+
+// Video viewer configuration
+interface VideoControlsConfig {
+  showControls?: boolean
+  showPlayPause?: boolean
+  showProgress?: boolean
+  showVolume?: boolean
+  showFullscreen?: boolean
+  autoPlay?: boolean
+  loop?: boolean
+  muted?: boolean
+}
+
+interface VideoViewerProps extends BaseViewerProps, ContentSource {
+  controls?: VideoControlsConfig
+  methods?: {
+    onPlay?: () => void
+    onPause?: () => void
+    onTimeUpdate?: (currentTime: number) => void
+    onVolumeChange?: (volume: number) => void
+    onFullscreen?: () => void
+  }
+}
+
+export type {
+  InteractiveImageViewerProps,
+  ImageControlsConfig,
+  ImageViewerMethods,
+  VideoViewerProps,
+  VideoControlsConfig,
+  ContentSource,
+  BaseViewerProps
+}`
+
+const pythonCode = `# Python data processing example
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+
+class DataProcessor:
+    """A class for processing CSV data with filtering and analysis."""
+    
+    def __init__(self, csv_content: str):
+        self.df = self._parse_csv(csv_content)
+        self.original_shape = self.df.shape
+    
+    def _parse_csv(self, content: str) -> pd.DataFrame:
+        """Parse CSV content into a pandas DataFrame."""
+        from io import StringIO
+        return pd.read_csv(StringIO(content))
+    
+    def filter_by_column(self, column: str, value: str) -> 'DataProcessor':
+        """Filter data by column value."""
+        if column in self.df.columns:
+            mask = self.df[column].astype(str).str.contains(value, case=False, na=False)
+            self.df = self.df[mask]
+        return self
+    
+    def sort_by_column(self, column: str, ascending: bool = True) -> 'DataProcessor':
+        """Sort data by specified column."""
+        if column in self.df.columns:
+            self.df = self.df.sort_values(by=column, ascending=ascending)
+        return self
+    
+    def get_summary_stats(self) -> dict:
+        """Get summary statistics for numeric columns."""
+        numeric_cols = self.df.select_dtypes(include=[np.number]).columns
+        return {
+            'total_rows': len(self.df),
+            'numeric_columns': len(numeric_cols),
+            'summary': self.df[numeric_cols].describe().to_dict() if len(numeric_cols) > 0 else {}
+        }
+    
+    def search_all_columns(self, search_term: str) -> 'DataProcessor':
+        """Search for term across all columns."""
+        mask = self.df.astype(str).apply(
+            lambda x: x.str.contains(search_term, case=False, na=False)
+        ).any(axis=1)
+        self.df = self.df[mask]
+        return self
+    
+    def to_json(self) -> str:
+        """Convert filtered data to JSON."""
+        return self.df.to_json(orient='records', indent=2)
+
+# Usage example
+if __name__ == "__main__":
+    csv_data = """Name,Age,City,Salary
+    John,30,New York,75000
+    Jane,25,Los Angeles,65000
+    Bob,35,Chicago,85000"""
+    
+    processor = DataProcessor(csv_data)
+    result = (processor
+              .filter_by_column('City', 'New')
+              .sort_by_column('Salary', ascending=False)
+              .get_summary_stats())
+    
+    print(f"Processed {result['total_rows']} rows")
+    print(f"Summary: {result['summary']}")`
 
 function App() {
-  // State for controlled image viewer
-  const [imageZoom, setImageZoom] = useState<number>(1)
-  const [imagePan, setImagePan] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  // FIXED: State for controlled image viewer - initialize with undefined to let component set initial values
+  const [imageZoom, setImageZoom] = useState<number | undefined>(undefined)
+  const [imagePan, setImagePan] = useState<{ x: number; y: number } | undefined>(undefined)
+  const [isControlled, setIsControlled] = useState(false)
+
+  // Initialize controlled state after component mounts
+  useEffect(() => {
+    // Delay initialization to let the image viewer set its initial state first
+    const timer = setTimeout(() => {
+      if (imageZoom === undefined) {
+        setImageZoom(1)
+      }
+      if (imagePan === undefined) {
+        setImagePan({ x: 0, y: 0 })
+      }
+      setIsControlled(true)
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [imageZoom, imagePan])
+
+  // FIXED: Only pass controlled props when we're ready
+  const controlledProps = isControlled
+    ? {
+        zoom: imageZoom,
+        onZoomChange: setImageZoom,
+        pan: imagePan,
+        onPanChange: setImagePan,
+      }
+    : {}
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">React File Preview Examples</h1>
 
       <div className="space-y-8 sm:space-y-12">
-        {/* Enhanced Image Viewer Controls Demo */}
+        {/* FIXED: Enhanced Image Viewer Controls Demo */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Image Viewer Controls</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Image Viewer Controls (FIXED)</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Controlled Image Viewer */}
+            {/* FIXED: Controlled Image Viewer */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">Controlled Image Viewer</h3>
+              <h3 className="text-lg font-medium mb-3">Controlled Image Viewer (Fixed)</h3>
               <div className="mb-4 space-y-2">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm font-medium">Zoom: {Math.round(imageZoom * 100)}%</label>
+                  <label className="text-sm font-medium">Zoom: {imageZoom ? Math.round(imageZoom * 100) : 100}%</label>
                   <input
                     type="range"
                     min="0.1"
                     max="3"
                     step="0.1"
-                    value={imageZoom}
+                    value={imageZoom || 1}
                     onChange={(e) => setImageZoom(Number.parseFloat(e.target.value))}
                     className="flex-1"
+                    disabled={!isControlled}
                   />
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setImageZoom(1)}
-                    className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
+                    disabled={!isControlled}
+                    className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
                   >
                     Reset Zoom
                   </button>
                   <button
                     onClick={() => setImagePan({ x: 0, y: 0 })}
-                    className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
+                    disabled={!isControlled}
+                    className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
                   >
                     Reset Pan
                   </button>
                 </div>
+                {!isControlled && <div className="text-xs text-gray-500">Initializing controlled state...</div>}
               </div>
               <div className="h-64">
                 <InteractiveImageViewer
                   src="https://picsum.photos/1200/800"
                   alt="Controlled image"
-                  zoom={imageZoom}
-                  onZoomChange={setImageZoom}
-                  pan={imagePan}
-                  onPanChange={setImagePan}
+                  {...controlledProps}
                   controls={{
                     showControls: true,
                     showZoomIn: true,
@@ -253,6 +629,62 @@ function App() {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Enhanced CSV Viewer with Filtering */}
+        <section>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Enhanced CSV Viewer with Filtering & Search
+          </h2>
+
+          <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-medium mb-3">Interactive CSV Data Table</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Try searching, filtering by columns, and sorting by clicking column headers.
+            </p>
+            <CSVViewer content={csvContent} />
+          </div>
+        </section>
+
+        {/* Enhanced Text Viewers with Syntax Highlighting */}
+        <section>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Text Viewers</h2>
+
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            {/* Markdown with Preview */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">Markdown with Live Preview</h3>
+              <TextViewer content={markdownContent} fileExtension="md" />
+            </div>
+
+            {/* JavaScript with Syntax Highlighting */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">JavaScript with Syntax Highlighting</h3>
+              <TextViewer content={javascriptCode} fileExtension="js" />
+            </div>
+
+            {/* TypeScript with Syntax Highlighting */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">TypeScript with Syntax Highlighting</h3>
+              <TextViewer content={typescriptCode} fileExtension="ts" />
+            </div>
+
+            {/* Python with Syntax Highlighting */}
+            <div>
+              <h3 className="text-lg font-medium mb-3">Python with Syntax Highlighting</h3>
+              <TextViewer content={pythonCode} fileExtension="py" />
+            </div>
+          </div>
+        </section>
+
+        {/* Enhanced JSON Viewer */}
+        <section>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced JSON Viewer</h2>
+
+          <div className="border rounded-lg p-4">
+            <h3 className="text-lg font-medium mb-3">Formatted JSON with Syntax Highlighting</h3>
+            <JSONViewer content={jsonContent} />
           </div>
         </section>
 
@@ -359,26 +791,6 @@ function App() {
           </div>
         </section>
 
-        {/* Text-based Content Demo */}
-        <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Text-based Content</h2>
-
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-            <div>
-              <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">JSON Viewer</h3>
-              <JSONViewer content={jsonContent} />
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">CSV Viewer</h3>
-              <CSVViewer content={csvContent} />
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">Markdown Text</h3>
-              <TextViewer content={textContent} fileExtension="md" />
-            </div>
-          </div>
-        </section>
-
         {/* Content Source Demo */}
         <section>
           <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Content Source Examples</h2>
@@ -398,7 +810,7 @@ function App() {
             {/* Direct JSON Content */}
             <div className="border rounded-lg p-4">
               <h3 className="text-lg font-medium mb-3">Direct JSON Content</h3>
-              <JSONViewer content='{"message": "Hello from direct content!", "timestamp": "2024-01-01T00:00:00Z", "data": [1, 2, 3, 4, 5]}' />
+              <JSONViewer content='{"message": "Hello from direct content!", "timestamp": "2024-01-01T00:00:00Z", "data": [1, 2, 3, 4, 5], "nested": {"key": "value", "array": ["a", "b", "c"]}}' />
             </div>
           </div>
         </section>
