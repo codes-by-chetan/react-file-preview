@@ -1,6 +1,7 @@
 import { MarkdownViewer } from "./MarkdownViewer"
-import { CodeViewer } from "./CodeViewer"
 import type { TextViewerProps } from "../types"
+import { CodeViewer } from "./CodeViewer"
+
 
 export function TextViewer({ content, fileExtension, className = "" }: TextViewerProps) {
   // Use MarkdownViewer for markdown files
