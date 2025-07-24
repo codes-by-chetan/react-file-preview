@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   FilePreviewComponent,
   InteractiveImageViewer,
@@ -9,7 +9,7 @@ import {
   JSONViewer,
   CSVViewer,
   TextViewer,
-} from "../../dist"
+} from "../../dist";
 
 const sampleFiles = [
   {
@@ -38,16 +38,16 @@ const sampleFiles = [
     type: "ppt",
   },
   {
-    name: "sample-excel.xlsx",
-    url: "https://file-examples.com/storage/fe68c8a7c7c38d9b8c1b4b8/2017/10/file_example_XLSX_10.xlsx",
+    name: "file-sample_100kB.docx",
+    url: "https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-sample-100kb-1752140979334.docx",
     type: "excel",
   },
   {
-    name: "sample-word.docx",
-    url: "https://file-examples.com/storage/fe68c8a7c7c38d9b8c1b4b8/2017/10/file-sample_100kB.docx",
+    name: "file_example_XLS_5000.xls",
+    url: "https://s3.us-east-1.amazonaws.com/dev-insurance-suite/muzz-corp-67c966ebc0d07a8e61fa753f/task-attachments/file-example-xls-5000-1752140964481.xls",
     type: "word",
   },
-]
+];
 
 const jsonContent = `{
   "name": "John Doe",
@@ -89,7 +89,7 @@ const jsonContent = `{
     "notifications": true,
     "language": "en-US"
   }
-}`
+}`;
 
 const csvContent = `Name,Age,City,Occupation,Salary,Department,Start Date,Performance Rating,Projects Completed,Skills
 John Doe,30,New York,Software Engineer,75000,Engineering,2020-01-15,4.5,12,"JavaScript,React,Node.js"
@@ -101,7 +101,7 @@ Diana Davis,29,Austin,Product Manager,78000,Product,2020-05-18,4.6,9,"Product St
 Eve Martinez,26,San Francisco,Frontend Developer,72000,Engineering,2021-08-12,4.9,7,"React,Vue.js,TypeScript"
 Frank Garcia,33,Miami,Backend Developer,74000,Engineering,2019-12-03,4.4,11,"Java,Spring,MySQL"
 Grace Lee,31,Portland,UX Designer,69000,Design,2020-09-14,4.5,5,"User Research,Wireframing,Prototyping"
-Henry Kim,27,Denver,DevOps Engineer,76000,Engineering,2021-04-07,4.6,8,"Docker,Kubernetes,AWS"`
+Henry Kim,27,Denver,DevOps Engineer,76000,Engineering,2021-04-07,4.6,8,"Docker,Kubernetes,AWS"`;
 
 const markdownContent = `# React File Preview Package
 
@@ -244,7 +244,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 > **Note**: This package is actively maintained and we welcome contributions!
-`
+`;
 
 const javascriptCode = `// React File Preview - Interactive Image Viewer
 import React, { useState, useCallback, useEffect } from 'react'
@@ -319,7 +319,7 @@ const InteractiveImageViewer = ({
   )
 }
 
-export default InteractiveImageViewer`
+export default InteractiveImageViewer`;
 
 const typescriptCode = `// TypeScript interfaces for React File Preview
 interface ImageControlsConfig {
@@ -402,7 +402,7 @@ export type {
   VideoControlsConfig,
   ContentSource,
   BaseViewerProps
-}`
+}`;
 
 const pythonCode = `# Python data processing example
 import pandas as pd
@@ -469,29 +469,31 @@ if __name__ == "__main__":
               .get_summary_stats())
     
     print(f"Processed {result['total_rows']} rows")
-    print(f"Summary: {result['summary']}")`
+    print(f"Summary: {result['summary']}")`;
 
 function App() {
   // FIXED: State for controlled image viewer - initialize with undefined to let component set initial values
-  const [imageZoom, setImageZoom] = useState<number | undefined>(undefined)
-  const [imagePan, setImagePan] = useState<{ x: number; y: number } | undefined>(undefined)
-  const [isControlled, setIsControlled] = useState(false)
+  const [imageZoom, setImageZoom] = useState<number | undefined>(undefined);
+  const [imagePan, setImagePan] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
+  const [isControlled, setIsControlled] = useState(false);
 
   // Initialize controlled state after component mounts
   useEffect(() => {
     // Delay initialization to let the image viewer set its initial state first
     const timer = setTimeout(() => {
       if (imageZoom === undefined) {
-        setImageZoom(1)
+        setImageZoom(1);
       }
       if (imagePan === undefined) {
-        setImagePan({ x: 0, y: 0 })
+        setImagePan({ x: 0, y: 0 });
       }
-      setIsControlled(true)
-    }, 100)
+      setIsControlled(true);
+    }, 100);
 
-    return () => clearTimeout(timer)
-  }, [imageZoom, imagePan])
+    return () => clearTimeout(timer);
+  }, [imageZoom, imagePan]);
 
   // FIXED: Only pass controlled props when we're ready
   const controlledProps = isControlled
@@ -501,31 +503,41 @@ function App() {
         pan: imagePan,
         onPanChange: setImagePan,
       }
-    : {}
+    : {};
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">React File Preview Examples</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">
+        React File Preview Examples
+      </h1>
 
       <div className="space-y-8 sm:space-y-12">
         {/* FIXED: Enhanced Image Viewer Controls Demo */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Image Viewer Controls (FIXED)</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Enhanced Image Viewer Controls (FIXED)
+          </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* FIXED: Controlled Image Viewer */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">Controlled Image Viewer (Fixed)</h3>
+              <h3 className="text-lg font-medium mb-3">
+                Controlled Image Viewer (Fixed)
+              </h3>
               <div className="mb-4 space-y-2">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm font-medium">Zoom: {imageZoom ? Math.round(imageZoom * 100) : 100}%</label>
+                  <label className="text-sm font-medium">
+                    Zoom: {imageZoom ? Math.round(imageZoom * 100) : 100}%
+                  </label>
                   <input
                     type="range"
                     min="0.1"
                     max="3"
                     step="0.1"
                     value={imageZoom || 1}
-                    onChange={(e) => setImageZoom(Number.parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setImageZoom(Number.parseFloat(e.target.value))
+                    }
                     className="flex-1"
                     disabled={!isControlled}
                   />
@@ -546,7 +558,11 @@ function App() {
                     Reset Pan
                   </button>
                 </div>
-                {!isControlled && <div className="text-xs text-gray-500">Initializing controlled state...</div>}
+                {!isControlled && (
+                  <div className="text-xs text-gray-500">
+                    Initializing controlled state...
+                  </div>
+                )}
               </div>
               <div className="h-64">
                 <InteractiveImageViewer
@@ -576,7 +592,9 @@ function App() {
 
             {/* Custom Controls Image Viewer */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">Custom Controls (Zoom Only)</h3>
+              <h3 className="text-lg font-medium mb-3">
+                Custom Controls (Zoom Only)
+              </h3>
               <div className="h-64">
                 <InteractiveImageViewer
                   src="https://picsum.photos/800/600"
@@ -596,7 +614,9 @@ function App() {
 
             {/* No Controls Image Viewer */}
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">No Controls (View Only)</h3>
+              <h3 className="text-lg font-medium mb-3">
+                No Controls (View Only)
+              </h3>
               <div className="h-64">
                 <InteractiveImageViewer
                   src="https://picsum.photos/600/400"
@@ -639,9 +659,12 @@ function App() {
           </h2>
 
           <div className="border rounded-lg p-4">
-            <h3 className="text-lg font-medium mb-3">Interactive CSV Data Table</h3>
+            <h3 className="text-lg font-medium mb-3">
+              Interactive CSV Data Table
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Try searching, filtering by columns, and sorting by clicking column headers.
+              Try searching, filtering by columns, and sorting by clicking
+              column headers.
             </p>
             <CSVViewer content={csvContent} />
           </div>
@@ -649,30 +672,40 @@ function App() {
 
         {/* Enhanced Text Viewers with Syntax Highlighting */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Text Viewers</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Enhanced Text Viewers
+          </h2>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* Markdown with Preview */}
             <div>
-              <h3 className="text-lg font-medium mb-3">Markdown with Live Preview</h3>
+              <h3 className="text-lg font-medium mb-3">
+                Markdown with Live Preview
+              </h3>
               <TextViewer content={markdownContent} fileExtension="md" />
             </div>
 
             {/* JavaScript with Syntax Highlighting */}
             <div>
-              <h3 className="text-lg font-medium mb-3">JavaScript with Syntax Highlighting</h3>
+              <h3 className="text-lg font-medium mb-3">
+                JavaScript with Syntax Highlighting
+              </h3>
               <TextViewer content={javascriptCode} fileExtension="js" />
             </div>
 
             {/* TypeScript with Syntax Highlighting */}
             <div>
-              <h3 className="text-lg font-medium mb-3">TypeScript with Syntax Highlighting</h3>
+              <h3 className="text-lg font-medium mb-3">
+                TypeScript with Syntax Highlighting
+              </h3>
               <TextViewer content={typescriptCode} fileExtension="ts" />
             </div>
 
             {/* Python with Syntax Highlighting */}
             <div>
-              <h3 className="text-lg font-medium mb-3">Python with Syntax Highlighting</h3>
+              <h3 className="text-lg font-medium mb-3">
+                Python with Syntax Highlighting
+              </h3>
               <TextViewer content={pythonCode} fileExtension="py" />
             </div>
           </div>
@@ -680,17 +713,23 @@ function App() {
 
         {/* Enhanced JSON Viewer */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced JSON Viewer</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Enhanced JSON Viewer
+          </h2>
 
           <div className="border rounded-lg p-4">
-            <h3 className="text-lg font-medium mb-3">Formatted JSON with Syntax Highlighting</h3>
+            <h3 className="text-lg font-medium mb-3">
+              Formatted JSON with Syntax Highlighting
+            </h3>
             <JSONViewer content={jsonContent} />
           </div>
         </section>
 
         {/* Enhanced Video Viewer */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Video Viewer</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Enhanced Video Viewer
+          </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="border rounded-lg p-4">
@@ -708,14 +747,17 @@ function App() {
                     onPlay: () => console.log("Video started playing"),
                     onPause: () => console.log("Video paused"),
                     onTimeUpdate: (time) => console.log("Time update:", time),
-                    onVolumeChange: (volume) => console.log("Volume changed:", volume),
+                    onVolumeChange: (volume) =>
+                      console.log("Volume changed:", volume),
                   }}
                 />
               </div>
             </div>
 
             <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">Auto-play Muted Video</h3>
+              <h3 className="text-lg font-medium mb-3">
+                Auto-play Muted Video
+              </h3>
               <div className="h-64">
                 <VideoViewer
                   src="https://www.w3schools.com/html/mov_bbb.mp4"
@@ -733,7 +775,9 @@ function App() {
 
         {/* Enhanced Audio Viewer */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Enhanced Audio Viewer</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Enhanced Audio Viewer
+          </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="border rounded-lg p-4">
@@ -774,11 +818,18 @@ function App() {
 
         {/* All File Types Demo */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">All File Types Preview</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            All File Types Preview
+          </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {sampleFiles.map((file, index) => (
-              <div key={index} className="border rounded-lg p-3 sm:p-4 shadow-sm">
-                <h3 className="text-base sm:text-lg font-medium mb-3">{file.name}</h3>
+              <div
+                key={index}
+                className="border rounded-lg p-3 sm:p-4 shadow-sm"
+              >
+                <h3 className="text-base sm:text-lg font-medium mb-3">
+                  {file.name}
+                </h3>
                 <FilePreviewComponent
                   src={file.url}
                   fileName={file.name}
@@ -793,7 +844,9 @@ function App() {
 
         {/* Content Source Demo */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Content Source Examples</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Content Source Examples
+          </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Base64 Image */}
@@ -817,12 +870,19 @@ function App() {
 
         {/* Method Callbacks Demo */}
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Method Callbacks Demo</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+            Method Callbacks Demo
+          </h2>
 
           <div className="border rounded-lg p-4">
-            <h3 className="text-lg font-medium mb-3">Image with All Callbacks</h3>
+            <h3 className="text-lg font-medium mb-3">
+              Image with All Callbacks
+            </h3>
             <div className="mb-4 p-3 bg-gray-100 rounded text-sm">
-              <p>Check the browser console to see callback logs when interacting with the image.</p>
+              <p>
+                Check the browser console to see callback logs when interacting
+                with the image.
+              </p>
             </div>
             <div className="h-64">
               <InteractiveImageViewer
@@ -832,8 +892,13 @@ function App() {
                   onZoomIn: () => console.log("🔍 Zoom In button clicked"),
                   onZoomOut: () => console.log("🔍 Zoom Out button clicked"),
                   onReset: () => console.log("🔄 Reset button clicked"),
-                  onFitToScreen: () => console.log("📐 Fit to Screen button clicked"),
-                  onZoomChange: (zoom) => console.log("📏 Zoom changed to:", Math.round(zoom * 100) + "%"),
+                  onFitToScreen: () =>
+                    console.log("📐 Fit to Screen button clicked"),
+                  onZoomChange: (zoom) =>
+                    console.log(
+                      "📏 Zoom changed to:",
+                      Math.round(zoom * 100) + "%"
+                    ),
                   onPanChange: (pan) => console.log("👆 Pan changed to:", pan),
                 }}
                 onLoad={() => console.log("✅ Image loaded successfully")}
@@ -844,7 +909,7 @@ function App() {
         </section>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
