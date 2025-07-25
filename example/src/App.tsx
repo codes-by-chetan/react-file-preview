@@ -473,10 +473,11 @@ if __name__ == "__main__":
 
 function App() {
   // FIXED: State for controlled image viewer - initialize with undefined to let component set initial values
-  const [imageZoom, setImageZoom] = useState<number | undefined>(undefined);
-  const [imagePan, setImagePan] = useState<
-    { x: number; y: number } | undefined
-  >(undefined);
+  const [imageZoom, setImageZoom] = useState<number>(1);
+  const [imagePan, setImagePan] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
   const [isControlled, setIsControlled] = useState(false);
 
   // Initialize controlled state after component mounts
@@ -500,7 +501,6 @@ function App() {
     ? {
         zoom: imageZoom,
         onZoomChange: setImageZoom,
-        pan: imagePan,
         onPanChange: setImagePan,
       }
     : {};
@@ -519,6 +519,65 @@ function App() {
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Custom Controls Image Viewer */}
+            <div className="border rounded-lg p-4">
+              <h3 className="text-lg font-medium mb-3">
+                Custom Controls (Zoom Only)
+              </h3>
+              <div className="h-64">
+                <InteractiveImageViewer
+                  src="https://picsum.photos/800/600"
+                  alt="Custom controls image"
+                  controls={{
+                    showControls: true,
+                    showZoomIn: true,
+                    showZoomOut: true,
+                    showReset: false,
+                    showFitToScreen: false,
+                    allowPan: true,
+                    allowZoom: true,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* No Controls Image Viewer */}
+            <div className="border rounded-lg p-4">
+              <h3 className="text-lg font-medium mb-3">
+                No Controls (View Only)
+              </h3>
+              <div className="h-64">
+                <InteractiveImageViewer
+                  src="https://picsum.photos/600/400"
+                  alt="No controls image"
+                  controls={{
+                    showControls: false,
+                    allowPan: false,
+                    allowZoom: false,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Pan Disabled Image Viewer */}
+            <div className="border rounded-lg p-4">
+              <h3 className="text-lg font-medium mb-3">Zoom Only (No Pan)</h3>
+              <div className="h-64">
+                <InteractiveImageViewer
+                  src="https://picsum.photos/900/600"
+                  alt="Zoom only image"
+                  controls={{
+                    showControls: true,
+                    showZoomIn: true,
+                    showZoomOut: true,
+                    showReset: true,
+                    showFitToScreen: true,
+                    allowPan: false,
+                    allowZoom: true,
+                  }}
+                />
+              </div>
+            </div>
             {/* FIXED: Controlled Image Viewer */}
             <div className="border rounded-lg p-4">
               <h3 className="text-lg font-medium mb-3">
@@ -585,66 +644,6 @@ function App() {
                     onFitToScreen: () => console.log("Fit to screen clicked"),
                     onZoomChange: (zoom) => console.log("Zoom changed:", zoom),
                     onPanChange: (pan) => console.log("Pan changed:", pan),
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Custom Controls Image Viewer */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">
-                Custom Controls (Zoom Only)
-              </h3>
-              <div className="h-64">
-                <InteractiveImageViewer
-                  src="https://picsum.photos/800/600"
-                  alt="Custom controls image"
-                  controls={{
-                    showControls: true,
-                    showZoomIn: true,
-                    showZoomOut: true,
-                    showReset: false,
-                    showFitToScreen: false,
-                    allowPan: true,
-                    allowZoom: true,
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* No Controls Image Viewer */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">
-                No Controls (View Only)
-              </h3>
-              <div className="h-64">
-                <InteractiveImageViewer
-                  src="https://picsum.photos/600/400"
-                  alt="No controls image"
-                  controls={{
-                    showControls: false,
-                    allowPan: false,
-                    allowZoom: false,
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Pan Disabled Image Viewer */}
-            <div className="border rounded-lg p-4">
-              <h3 className="text-lg font-medium mb-3">Zoom Only (No Pan)</h3>
-              <div className="h-64">
-                <InteractiveImageViewer
-                  src="https://picsum.photos/900/600"
-                  alt="Zoom only image"
-                  controls={{
-                    showControls: true,
-                    showZoomIn: true,
-                    showZoomOut: true,
-                    showReset: true,
-                    showFitToScreen: true,
-                    allowPan: false,
-                    allowZoom: true,
                   }}
                 />
               </div>

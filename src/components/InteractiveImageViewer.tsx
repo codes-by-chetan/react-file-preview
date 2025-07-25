@@ -443,7 +443,7 @@ export function InteractiveImageViewer({
               <ZoomOut className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           )}
-          {controlConfig.showFitToScreen && (
+          {/* {controlConfig.showFitToScreen && (
             <Button
               size="icon"
               variant="ghost"
@@ -453,7 +453,7 @@ export function InteractiveImageViewer({
             >
               <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
-          )}
+          )} */}
           {controlConfig.showReset && (
             <Button
               size="icon"

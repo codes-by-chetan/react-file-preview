@@ -1,7 +1,7 @@
 export interface CodeBlock {
   id: string
   startLine: number
-  endLine: number | null // Allow null for unclosed blocks
+  endLine: number
   type:
     | "function"
     | "class"
@@ -10,30 +10,25 @@ export interface CodeBlock {
     | "for"
     | "while"
     | "try"
+    | "catch"
+    | "finally"
+    | "switch"
     | "object"
     | "array"
-    | "block"
-    | "switch"
     | "jsx"
     | "hook"
-    | "export" // Added for export statements
+    | "export"
+    | "angular"
   name?: string
   indent: number
 }
 
 export interface BracketPair {
   open: number
-  close: number | null // Allow null for unclosed brackets
+  close: number
   type: "()" | "[]" | "{}"
   line: number
-  depth: number // Added to track nesting level
-}
-
-export interface SyntaxToken {
-  type: "keyword" | "string" | "number" | "comment" | "operator" | "bracket" | "identifier" | "jsxTag" // Added jsxTag for JSX
-  value: string
-  start: number
-  end: number
+  depth: number
 }
 
 export interface LineInfo {
@@ -43,5 +38,5 @@ export interface LineInfo {
   block?: CodeBlock
   isBlockStart: boolean
   isCollapsed: boolean
-  tokens?: SyntaxToken[] // Added for token-based analysis
+  isPlaceholder?: boolean
 }
