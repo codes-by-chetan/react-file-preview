@@ -5,11 +5,12 @@ import { BlockDetector } from "./BlockDetector";
 import { LineRenderer } from "./LineRenderer";
 import type { BaseViewerProps } from "../../types";
 import type { BracketPair, LineInfo } from "./types";
-
+import { ScrollArea } from "@/components/ui/scroll-area";
 interface CodeViewerProps extends BaseViewerProps {
   content: string;
   language: string;
   fileName?: string;
+  height?: string;
 }
 
 export function CodeViewer({
@@ -17,6 +18,7 @@ export function CodeViewer({
   language,
   fileName,
   className = "",
+  height = "100%",
 }: CodeViewerProps) {
   const [copied, setCopied] = useState(false);
   const [hoveredBracket, setHoveredBracket] = useState<number | null>(null);
@@ -219,9 +221,10 @@ export function CodeViewer({
       </div>
 
       {/* Code Content */}
-      <div
+      <ScrollArea
         ref={contentRef}
-        className="bg-gray-50 overflow-auto min-h-96 max-h-96"
+        className="bg-gray-50 max-h-96"
+        style={{ maxHeight: height || "100%" }}
       >
         <div
           className=""
@@ -251,7 +254,7 @@ export function CodeViewer({
             <div className="leading-6" style={{ whiteSpace: "pre-wrap" }}></div>
           </div>
         </div>
-      </div>
+      </ScrollArea>
 
       {/* Footer */}
       <div className="px-3 py-2 border-t bg-gray-50 text-xs text-gray-500 flex justify-between">

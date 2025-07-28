@@ -126,6 +126,7 @@ export interface OfficeViewerProps extends BaseViewerProps, ContentSource {}
 export interface TextViewerProps extends BaseViewerProps {
   content: string
   fileExtension: string
+  height?: string;
 }
 
 export interface JSONViewerProps extends BaseViewerProps {

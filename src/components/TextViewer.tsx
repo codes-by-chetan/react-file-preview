@@ -1,12 +1,16 @@
-import { MarkdownViewer } from "./MarkdownViewer"
-import type { TextViewerProps } from "../types"
-import { CodeViewer } from "./CodeViewer"
+import { MarkdownViewer } from "./MarkdownViewer";
+import type { TextViewerProps } from "../types";
+import { CodeViewer } from "./CodeViewer";
 
-
-export function TextViewer({ content, fileExtension, className = "" }: TextViewerProps) {
+export function TextViewer({
+  content,
+  fileExtension,
+  className = "",
+  height = "100%",
+}: TextViewerProps) {
   // Use MarkdownViewer for markdown files
   if (fileExtension === "md" || fileExtension === "markdown") {
-    return <MarkdownViewer content={content} className={className} />
+    return <MarkdownViewer content={content} className={className} />;
   }
 
   // Use CodeViewer for code files
@@ -25,9 +29,16 @@ export function TextViewer({ content, fileExtension, className = "" }: TextViewe
     "sql",
     "yml",
     "yaml",
-  ]
+  ];
   if (codeExtensions.includes(fileExtension)) {
-    return <CodeViewer content={content} language={fileExtension} className={className} />
+    return (
+      <CodeViewer
+        content={content}
+        language={fileExtension}
+        className={className}
+        height={height}
+      />
+    );
   }
 
   // Fallback to simple text viewer
@@ -39,5 +50,5 @@ export function TextViewer({ content, fileExtension, className = "" }: TextViewe
         <code>{content}</code>
       </pre>
     </div>
-  )
+  );
 }
