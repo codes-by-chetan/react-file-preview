@@ -8,6 +8,7 @@ import {
 import { NavGroup } from '@/components/layout/nav-group'
 import { NavUser } from '@/components/layout/nav-user'
 import { TeamSwitcher } from '@/components/layout/team-switcher'
+import { ThemeSwitch } from '../theme-switch'
 import { sidebarData } from './data/sidebar-data'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -20,6 +21,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {sidebarData.navGroups.map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
+
+        <ThemeSwitch />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={sidebarData.user} />

@@ -27,7 +27,7 @@ export function MarkdownViewer({ content, className = "" }: MarkdownViewerProps)
 
     // Code blocks
     html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-      return `<pre class="bg-gray-100 rounded p-3 my-3 overflow-x-auto"><code class="text-sm font-mono">${code.trim()}</code></pre>`
+      return `<pre class="bg-gray-100 rounded p-3 my-3"><code class="text-sm font-mono whitespace-pre">${code.trim()}</code></pre>`
     })
 
     // Inline code
@@ -60,51 +60,79 @@ export function MarkdownViewer({ content, className = "" }: MarkdownViewerProps)
   }
 
   const renderPreview = () => (
-    <div
-      className="prose prose-sm max-w-none p-4 overflow-auto max-h-96"
-      dangerouslySetInnerHTML={{ __html: markdownToHtml(content) }}
-    />
+    <div className="bg-gray-50" style={{ height: "400px" }}>
+      <div className="h-full w-full overflow-auto">
+        <div className="p-4 min-w-max">
+          <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: markdownToHtml(content) }} />
+        </div>
+      </div>
+    </div>
   )
 
   const renderSource = () => (
-    <div className="bg-gray-50 rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm overflow-auto max-h-96">
-      <pre className="whitespace-pre-wrap break-words">
-        <code>{content}</code>
-      </pre>
+    <div className="bg-gray-50" style={{ height: "400px" }}>
+      <div className="h-full w-full overflow-auto">
+        <div className="p-4 min-w-max">
+          <pre
+            className="font-mono text-sm whitespace-pre"
+            style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+            }}
+          >
+            <code>{content}</code>
+          </pre>
+        </div>
+      </div>
     </div>
   )
 
   const renderSplit = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-96">
-      <div className="border rounded">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4" style={{ height: "400px" }}>
+      <div className="border rounded overflow-hidden">
         <div className="bg-gray-100 px-3 py-2 border-b">
           <span className="text-sm font-medium flex items-center gap-2">
             <Code className="w-4 h-4" />
             Source
           </span>
         </div>
-        <div className="bg-gray-50 p-3 font-mono text-xs overflow-auto max-h-80">
-          <pre className="whitespace-pre-wrap break-words">
-            <code>{content}</code>
-          </pre>
+        <div className="bg-gray-50" style={{ height: "calc(100% - 49px)" }}>
+          <div className="h-full w-full overflow-auto">
+            <div className="p-3 min-w-max">
+              <pre
+                className="font-mono text-xs whitespace-pre"
+                style={{
+                  fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                }}
+              >
+                <code>{content}</code>
+              </pre>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="border rounded">
+      <div className="border rounded overflow-hidden">
         <div className="bg-gray-100 px-3 py-2 border-b">
           <span className="text-sm font-medium flex items-center gap-2">
             <Eye className="w-4 h-4" />
             Preview
           </span>
         </div>
-        <div className="prose prose-sm max-w-none p-3 overflow-auto max-h-80">
-          <div dangerouslySetInnerHTML={{ __html: markdownToHtml(content) }} />
+        <div className="bg-gray-50" style={{ height: "calc(100% - 49px)" }}>
+          <div className="h-full w-full overflow-auto">
+            <div className="p-3 min-w-max">
+              <div
+                className="prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: markdownToHtml(content) }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   )
 
   return (
-    <div className={`border rounded-lg ${className}`}>
+    <div className={`border rounded-lg overflow-hidden ${className}`}>
       {/* View Mode Controls */}
       <div className="flex items-center justify-between p-3 border-b bg-gray-50">
         <div className="flex items-center gap-2">

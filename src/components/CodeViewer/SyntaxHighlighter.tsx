@@ -274,5 +274,5 @@ export function SyntaxHighlighter({
     return parts.length > 0 ? parts : ["\u00A0"]
   }
 
-  return <>{renderHighlightedLine()}</>
+  return <span className="inline-block min-w-max">{renderHighlightedLine()}</span>
 }

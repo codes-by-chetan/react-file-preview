@@ -691,7 +691,7 @@ function FilePreview() {
                 JavaScript with Syntax Highlighting
               </h3>
               
-                <TextViewer height="400px" className="!max-h-[450px]" content={javascriptCode} fileExtension="js" />
+                <TextViewer  className="!max-h-[450px]" content={javascriptCode} fileExtension="js" />
              
             </div>
 

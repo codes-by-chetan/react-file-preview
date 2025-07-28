@@ -1,26 +1,9 @@
 export interface CodeBlock {
-  id: string
   startLine: number
-  endLine: number
-  type:
-    | "function"
-    | "class"
-    | "interface"
-    | "if"
-    | "for"
-    | "while"
-    | "try"
-    | "catch"
-    | "finally"
-    | "switch"
-    | "object"
-    | "array"
-    | "jsx"
-    | "hook"
-    | "export"
-    | "angular"
+  endLine?: number
+  type: "function" | "class" | "interface" | "if" | "for" | "while" | "try" | "object" | "array" | "block"
   name?: string
-  indent: number
+  id: string
 }
 
 export interface BracketPair {
@@ -38,5 +21,4 @@ export interface LineInfo {
   block?: CodeBlock
   isBlockStart: boolean
   isCollapsed: boolean
-  isPlaceholder?: boolean
 }

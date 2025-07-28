@@ -1,16 +1,11 @@
-import { MarkdownViewer } from "./MarkdownViewer";
-import type { TextViewerProps } from "../types";
-import { CodeViewer } from "./CodeViewer";
+import { MarkdownViewer } from "./MarkdownViewer"
+import type { TextViewerProps } from "../types"
+import { CodeViewer } from "./CodeViewer"
 
-export function TextViewer({
-  content,
-  fileExtension,
-  className = "",
-  height = "100%",
-}: TextViewerProps) {
+export function TextViewer({ content, fileExtension, className = "", height = "100%" }: TextViewerProps) {
   // Use MarkdownViewer for markdown files
   if (fileExtension === "md" || fileExtension === "markdown") {
-    return <MarkdownViewer content={content} className={className} />;
+    return <MarkdownViewer content={content} className={className} />
   }
 
   // Use CodeViewer for code files
@@ -29,26 +24,19 @@ export function TextViewer({
     "sql",
     "yml",
     "yaml",
-  ];
+  ]
   if (codeExtensions.includes(fileExtension)) {
-    return (
-      <CodeViewer
-        content={content}
-        language={fileExtension}
-        className={className}
-        height={height}
-      />
-    );
+    return <CodeViewer content={content} language={fileExtension} className={className} height={height} />
   }
 
   // Fallback to simple text viewer
   return (
     <div
-      className={`bg-gray-50 rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm overflow-auto border max-h-96 ${className}`}
+      className={`bg-gray-50 rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm overflow-auto border max-h-96 min-w-0 ${className}`}
     >
-      <pre className="whitespace-pre-wrap break-words">
+      <pre className="whitespace-pre overflow-x-auto min-w-0">
         <code>{content}</code>
       </pre>
     </div>
-  );
+  )
 }
