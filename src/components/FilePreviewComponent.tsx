@@ -1,6 +1,14 @@
 "use client"
 import { FileText, AlertCircle, Download } from "lucide-react"
-import { InteractiveImageViewer } from "./InteractiveImageViewer"
+import {
+  ImageViewer,
+  ImageViewerContent,
+  ImageViewerToolbar,
+  ImageViewerZoomIndicator,
+  ImageViewerZoomInButton,
+  ImageViewerZoomOutButton,
+  ImageViewerResetButton,
+} from "./ImageViewer"
 import { PDFViewer } from "./PDFViewer"
 import { VideoViewer } from "./VideoViewer"
 import { AudioViewer } from "./AudioViewer"
@@ -62,7 +70,7 @@ export function FilePreviewComponent({
   // Get download URL
   const downloadUrl = src || (blob ? URL.createObjectURL(blob) : "")
 
-  // Image files
+  // Image files - Using new modular ImageViewer
   if (["svg", "png", "jpg", "jpeg", "gif", "webp", "bmp", "ico"].includes(fileExtension)) {
     return (
       <div className={`w-full ${className}`} style={{ height }}>
@@ -70,14 +78,22 @@ export function FilePreviewComponent({
           <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
         )}
         <div style={{ height: contentHeight }}>
-          <InteractiveImageViewer
-            src={src}
+          <ImageViewer
+            src={src || "/placeholder.svg"}
             blob={blob}
-            content={content}
+            
             alt={fileName}
             onError={onError}
             onLoad={onLoad}
-          />
+          >
+            <ImageViewerContent  />
+            <ImageViewerToolbar position="top-right">
+              <ImageViewerZoomInButton />
+              <ImageViewerZoomOutButton />
+              <ImageViewerResetButton />
+            </ImageViewerToolbar>
+            <ImageViewerZoomIndicator position="bottom-right" />
+          </ImageViewer>
         </div>
       </div>
     )

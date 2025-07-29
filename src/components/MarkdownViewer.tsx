@@ -27,11 +27,11 @@ export function MarkdownViewer({ content, className = "" }: MarkdownViewerProps)
 
     // Code blocks
     html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-      return `<pre class="bg-gray-100 rounded p-3 my-3"><code class="text-sm font-mono whitespace-pre">${code.trim()}</code></pre>`
+      return `<pre class="bg-muted rounded p-3 my-3"><code class="text-sm text-muted-foreground font-mono whitespace-pre">${code.trim()}</code></pre>`
     })
 
     // Inline code
-    html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
+    html = html.replace(/`([^`]+)`/g, '<code class="bg-gray-100 dark:bg-gray-600  px-1 py-0.5 rounded text-sm font-mono">$1</code>')
 
     // Links
     html = html.replace(

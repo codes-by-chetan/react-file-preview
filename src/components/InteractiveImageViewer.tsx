@@ -24,7 +24,7 @@ export function InteractiveImageViewer({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement | null>(null)
-  const animationRef = useRef<number>(null)
+  const animationRef = useRef<number | null>(null)
 
   // Default control configuration
   const controlConfig = {

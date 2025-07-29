@@ -1,47 +1,49 @@
-// Main wrapper component
+// Main FilePreviewComponent
 export { FilePreviewComponent } from "./components/FilePreviewComponent"
 
-// Individual file type viewers
+// Modular Image Viewer Components
+export {
+  ImageViewer,
+  ImageViewerContent,
+  ImageViewerToolbar,
+  ImageViewerZoomIndicator,
+  ImageViewerZoomInButton,
+  ImageViewerZoomOutButton,
+  ImageViewerResetButton,
+  ImageViewerFitToScreenButton,
+} from "./components/ImageViewer"
+
+// Individual Viewer Components
 export { InteractiveImageViewer } from "./components/InteractiveImageViewer"
-export { PDFViewer } from "./components/PDFViewer"
 export { VideoViewer } from "./components/VideoViewer"
 export { AudioViewer } from "./components/AudioViewer"
-export { OfficeViewer } from "./components/OfficeViewer"
-export { TextViewer } from "./components/TextViewer"
 export { JSONViewer } from "./components/JSONViewer"
 export { CSVViewer } from "./components/CSVViewer"
+export { TextViewer } from "./components/TextViewer"
 export { MarkdownViewer } from "./components/MarkdownViewer"
-export { CodeViewer } from "./components/CodeViewer"
+export { PDFViewer } from "./components/PDFViewer"
+export { OfficeViewer } from "./components/OfficeViewer"
 
-// Layout components
-export { FilePreviewHeader } from "./components/FilePreviewHeader"
-export { FilePreviewContainer } from "./components/FilePreviewContainer"
-
-// Utility components
-export { Button } from "./components/ui/Button"
-
-// Hooks
-export { useFileContent } from "./hooks/useFileContent"
+// Context and Provider
+export { FilePreviewProvider, useFilePreview } from "./contexts/FilePreviewContext"
 
 // Types
 export type {
   FilePreviewProps,
-  InteractiveImageViewerProps,
-  ImageControlsConfig,
-  ImageViewerMethods,
-  VideoViewerProps,
-  VideoControlsConfig,
-  VideoViewerMethods,
-  AudioViewerProps,
-  AudioControlsConfig,
-  AudioViewerMethods,
-  FilePreviewHeaderProps,
-  FilePreviewContainerProps,
-  PDFViewerProps,
-  OfficeViewerProps,
-  TextViewerProps,
-  JSONViewerProps,
-  CSVViewerProps,
-  ContentSource,
-  BaseViewerProps,
 } from "./types"
+
+export type {
+  ImageViewerProps,
+  ImageViewerContentProps,
+  ImageViewerToolbarProps,
+  ImageViewerZoomIndicatorProps,
+  ImageViewerButtonProps,
+} from "./components/ImageViewer"
+
+export type {
+  FilePreviewContextType,
+  ImageViewerState,
+  ImageViewerActions,
+  ImageViewerMethods,
+  FilePreviewProviderProps,
+} from "./contexts/FilePreviewContext"
