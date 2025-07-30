@@ -7,7 +7,8 @@ import {
   ImageViewerZoomIndicator,
   ImageViewerZoomInButton,
   ImageViewerZoomOutButton,
-  ImageViewerResetButton,
+  ImageViewerFillViewButton,
+  ImageViewerFitToViewButton,
 } from "./ImageViewer"
 import { PDFViewer } from "./PDFViewer"
 import { VideoViewer } from "./VideoViewer"
@@ -75,22 +76,27 @@ export function FilePreviewComponent({
     return (
       <div className={`w-full ${className}`} style={{ height }}>
         {showFileName && (
-          <FilePreviewHeader fileName={fileName} src={downloadUrl} showDownloadButton={showDownloadButton} />
+          <FilePreviewHeader
+            fileName={fileName}
+            src={downloadUrl || "/placeholder.svg"}
+            showDownloadButton={showDownloadButton}
+          />
         )}
         <div style={{ height: contentHeight }}>
           <ImageViewer
             src={src || "/placeholder.svg"}
             blob={blob}
-            
             alt={fileName}
             onError={onError}
             onLoad={onLoad}
+            fitOnLoad={true}
           >
-            <ImageViewerContent  />
+            <ImageViewerContent />
             <ImageViewerToolbar position="top-right">
               <ImageViewerZoomInButton />
               <ImageViewerZoomOutButton />
-              <ImageViewerResetButton />
+              <ImageViewerFitToViewButton />
+              <ImageViewerFillViewButton />
             </ImageViewerToolbar>
             <ImageViewerZoomIndicator position="bottom-right" />
           </ImageViewer>

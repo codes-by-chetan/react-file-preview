@@ -9,8 +9,8 @@ export {
   ImageViewerZoomIndicator,
   ImageViewerZoomInButton,
   ImageViewerZoomOutButton,
-  ImageViewerResetButton,
-  ImageViewerFitToScreenButton,
+  ImageViewerFillViewButton,
+  ImageViewerFitToViewButton,
 } from "./components/ImageViewer"
 
 // Individual Viewer Components
@@ -28,9 +28,7 @@ export { OfficeViewer } from "./components/OfficeViewer"
 export { FilePreviewProvider, useFilePreview } from "./contexts/FilePreviewContext"
 
 // Types
-export type {
-  FilePreviewProps,
-} from "./types"
+export type { FilePreviewProps } from "./types"
 
 export type {
   ImageViewerProps,

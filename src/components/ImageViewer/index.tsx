@@ -5,8 +5,8 @@ export { ImageViewerZoomIndicator } from "./ImageViewerZoomIndicator"
 export {
   ImageViewerZoomInButton,
   ImageViewerZoomOutButton,
-  ImageViewerResetButton,
-  ImageViewerFitToScreenButton,
+  ImageViewerFillViewButton,
+  ImageViewerFitToViewButton,
 } from "./ImageViewerControls"
 
 export type { ImageViewerProps } from "./ImageViewer"

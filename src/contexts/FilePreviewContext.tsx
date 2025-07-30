@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useRef, useState, useCallback, type ReactNode } from "react"
+import { createContext, useContext, useRef, useState, useCallback, type ReactNode, useEffect } from "react"
 
 // Types for the context
 export interface ImageViewerState {
@@ -14,6 +14,7 @@ export interface ImageViewerState {
   imageDimensions: { width: number; height: number }
   imageSrc: string
   hasError: boolean
+  isInitialized: boolean
   containerRef: React.RefObject<HTMLDivElement>
   canvasRef: React.RefObject<HTMLCanvasElement>
   imageRef: React.RefObject<HTMLImageElement>
@@ -29,10 +30,11 @@ export interface ImageViewerActions {
   setImageDimensions: (dimensions: { width: number; height: number }) => void
   setSrc: (src: string) => void
   setImageElement: (element: HTMLImageElement | null) => void
+  setIsInitialized: (initialized: boolean) => void
   zoomIn: () => void
   zoomOut: () => void
-  reset: () => void
-  fitToScreen: () => void
+  fillView: () => void
+  fitToView: () => void
   updateZoom: (newZoom: number) => void
   updatePan: (newPan: { x: number; y: number }) => void
 }
@@ -40,8 +42,8 @@ export interface ImageViewerActions {
 export interface ImageViewerMethods {
   onZoomIn?: () => void
   onZoomOut?: () => void
-  onReset?: () => void
-  onFitToScreen?: () => void
+  onFillView?: () => void
+  onFitToView?: () => void
   onZoomChange?: (zoom: number) => void
   onPanChange?: (offset: { x: number; y: number }) => void
   onLoad?: () => void
@@ -92,7 +94,7 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
   // Refs
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const imageRef = useRef<HTMLImageElement|null>(null)
+  const imageRef = useRef<HTMLImageElement | null>(null)
 
   // Internal state
   const [internalZoom, setInternalZoom] = useState(1)
@@ -103,7 +105,18 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
   const [imageError, setImageError] = useState<string | null>(null)
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
   const [imageSrc, setSrc] = useState(src)
+  const [isInitialized, setIsInitialized] = useState(false)
   const [methods, setMethods] = useState<ImageViewerMethods>(externalMethods)
+
+  // Update methods when external methods change
+  useEffect(() => {
+    if (externalMethods) {
+      setMethods((prevMethods) => ({
+        ...prevMethods,
+        ...externalMethods,
+      }))
+    }
+  }, [externalMethods])
 
   // Use external state if provided, otherwise use internal state
   const currentZoom = externalZoom !== undefined ? externalZoom : internalZoom
@@ -147,30 +160,65 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
     updateZoom(currentZoom / 1.2)
   }, [currentZoom, updateZoom, methods])
 
-  const reset = useCallback(() => {
-    methods.onReset?.()
+  // Fill view - sets zoom to 1 (original size) and centers the image
+  const fillView = useCallback(() => {
+    methods.onFillView?.()
     updateZoom(1)
     updatePan({ x: 0, y: 0 })
   }, [updateZoom, updatePan, methods])
 
-  const fitToScreen = useCallback(() => {
-    if (!containerRef.current || !imageDimensions.width || !imageDimensions.height) return
+  // Fit to view - scales the image to fit within the container with proper error handling
+  const fitToView = useCallback(() => {
+    if (!containerRef.current || !imageDimensions.width || !imageDimensions.height) {
+      console.warn("FitToView: Missing container or image dimensions", {
+        container: !!containerRef.current,
+        imageDimensions,
+      })
+      return
+    }
 
-    methods.onFitToScreen?.()
+    methods.onFitToView?.()
 
-    const container = containerRef.current.getBoundingClientRect()
-    const scaleX = container.width / imageDimensions.width
-    const scaleY = container.height / imageDimensions.height
-    const scale = Math.min(scaleX, scaleY, 1)
+    // Get container dimensions with retry logic
+    const getContainerDimensions = () => {
+      const rect = containerRef.current?.getBoundingClientRect()
+      return {
+        width: rect?.width || 0,
+        height: rect?.height || 0,
+      }
+    }
 
+    const containerDims = getContainerDimensions()
+
+    // If container has no dimensions, wait a bit and try again
+    if (containerDims.width === 0 || containerDims.height === 0) {
+      console.warn("FitToView: Container has no dimensions, retrying...", containerDims)
+      setTimeout(() => {
+        const retryDims = getContainerDimensions()
+        if (retryDims.width > 0 && retryDims.height > 0) {
+          const scaleX = retryDims.width / imageDimensions.width
+          const scaleY = retryDims.height / imageDimensions.height
+          const scale = Math.min(scaleX, scaleY, 1) // Don't scale up beyond original size
+
+          console.log("FitToView: Applying scale", { scale, containerDims: retryDims, imageDimensions })
+          updateZoom(scale)
+          updatePan({ x: 0, y: 0 })
+        }
+      }, 100)
+      return
+    }
+
+    const scaleX = containerDims.width / imageDimensions.width
+    const scaleY = containerDims.height / imageDimensions.height
+    const scale = Math.min(scaleX, scaleY, 1) // Don't scale up beyond original size
+
+    console.log("FitToView: Applying scale", { scale, containerDims, imageDimensions })
     updateZoom(scale)
     updatePan({ x: 0, y: 0 })
   }, [imageDimensions, updateZoom, updatePan, methods])
 
   const setImageElement = useCallback((element: HTMLImageElement | null) => {
-    if (imageRef.current) {
-      imageRef.current = element
-    }
+    imageRef.current = element
   }, [])
 
   const contextValue: FilePreviewContextType = {
@@ -184,6 +232,7 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
     imageDimensions,
     imageSrc,
     hasError: !!imageError,
+    isInitialized,
     containerRef,
     canvasRef,
     imageRef,
@@ -205,11 +254,12 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
     setImageDimensions,
     setSrc,
     setImageElement,
+    setIsInitialized,
     setMethods,
     zoomIn,
     zoomOut,
-    reset,
-    fitToScreen,
+    fillView,
+    fitToView,
     updateZoom,
     updatePan,
   }
