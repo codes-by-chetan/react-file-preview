@@ -25,27 +25,28 @@ export function LineRenderer({
   return (
     <div className="flex min-h-[24px] min-w-max">
       {/* Line Number and Collapse Icon */}
-      <div className="bg-gray-100 px-2 text-xs text-gray-500 font-mono select-none border-r !min-w-[500px] flex items-start !pt-28 flex-shrink-0">
+      <div
+        style={{ width: "50px", display:"flex", justifyContent:`${lineInfo.isBlockStart && lineInfo.block? "space-between": "end"}`, alignItems:"start" }}
+        className="bg-gray-100 dark:bg-gray-600 px-2 text-xs text-gray-500 dark:text-gray-100 font-mono select-none border-r flex items-center justify-between flex-shrink-0"
+      >
         {lineInfo.isBlockStart && lineInfo.block && (
           <button
             onClick={() => onToggleBlock(lineInfo.block!.id)}
-            className="hover:bg-gray-200 rounded p-0.5 flex-shrink-0 mt-0.5 mr-1"
+            className="hover:bg-gray-200 dark:hover:bg-gray-500 rounded p-0.5 flex-shrink-0 mr-1"
             title={`${lineInfo.isCollapsed ? "Expand" : "Collapse"} ${
               lineInfo.block.type
             }${lineInfo.block.name ? ` "${lineInfo.block.name}"` : ""}`}
           >
             {lineInfo.isCollapsed ? (
-              <ChevronRight size={15} className="w-2 h-2" />
+              <ChevronRight size={12} className="w-3 h-3" />
             ) : (
-              <ChevronDown size={15} className="w-2 h-2" />
+              <ChevronDown size={12} className="w-3 h-3" />
             )}
           </button>
         )}
-        <div className="pt-5">
-          <span className="text-right  flex-1 leading-6">
-            {lineInfo.originalIndex + 1}
-          </span>
-        </div>
+        <span className="text-right leading-6 ">
+          {lineInfo.originalIndex + 1}
+        </span>
       </div>
 
       {/* Code Content */}
@@ -59,9 +60,9 @@ export function LineRenderer({
             bracketPairs={bracketPairs}
             onBracketHover={onBracketHover}
           />
-          {lineInfo.isCollapsed && lineInfo.block && (
+          {lineInfo.isCollapsed && lineInfo.block && lineInfo.block.endLine && (
             <span className="text-gray-400 italic ml-2 whitespace-nowrap">
-              ... {lineInfo.block.endLine || 0 - lineInfo.block.startLine} lines
+              ... {lineInfo.block.endLine - lineInfo.block.startLine} lines
               collapsed ({lineInfo.block.type}
               {lineInfo.block.name ? ` "${lineInfo.block.name}"` : ""})
             </span>

@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useRef, useState, useCallback, type ReactNode, useEffect } from "react"
+import { createContext, useContext, useRef, useState, useCallback, useMemo, type ReactNode, useEffect } from "react"
 
 // Types for the context
 export interface ImageViewerState {
@@ -108,15 +108,28 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
   const [isInitialized, setIsInitialized] = useState(false)
   const [methods, setMethods] = useState<ImageViewerMethods>(externalMethods)
 
-  // Update methods when external methods change
-  useEffect(() => {
-    if (externalMethods) {
-      setMethods((prevMethods) => ({
-        ...prevMethods,
-        ...externalMethods,
-      }))
+  // Update methods when external methods change - use useMemo to prevent infinite loops
+  const stableMethods = useMemo(() => {
+    if (!externalMethods) return {}
+
+    // Only update if the methods have actually changed
+    const hasChanged = Object.keys(externalMethods).some((key) => {
+      return methods[key as keyof ImageViewerMethods] !== externalMethods[key as keyof ImageViewerMethods]
+    })
+
+    if (hasChanged) {
+      return { ...methods, ...externalMethods }
     }
-  }, [externalMethods])
+
+    return methods
+  }, [externalMethods, methods])
+
+  // Update methods state only when stableMethods actually changes
+  useEffect(() => {
+    if (stableMethods !== methods) {
+      setMethods(stableMethods)
+    }
+  }, [stableMethods, methods])
 
   // Use external state if provided, otherwise use internal state
   const currentZoom = externalZoom !== undefined ? externalZoom : internalZoom
@@ -221,48 +234,85 @@ export const FilePreviewProvider: React.FC<FilePreviewProviderProps> = ({
     imageRef.current = element
   }, [])
 
-  const contextValue: FilePreviewContextType = {
-    // State
-    zoom: currentZoom,
-    pan: currentPan,
-    isDragging,
-    dragStart,
-    imageLoaded,
-    imageError,
-    imageDimensions,
-    imageSrc,
-    hasError: !!imageError,
-    isInitialized,
-    containerRef,
-    canvasRef,
-    imageRef,
-    methods,
-    externalZoom,
-    externalPan,
-    onZoomChange: externalOnZoomChange,
-    onPanChange: externalOnPanChange,
-    onError: externalOnError,
-    onLoad: externalOnLoad,
+  const contextValue: FilePreviewContextType = useMemo(
+    () => ({
+      // State
+      zoom: currentZoom,
+      pan: currentPan,
+      isDragging,
+      dragStart,
+      imageLoaded,
+      imageError,
+      imageDimensions,
+      imageSrc,
+      hasError: !!imageError,
+      isInitialized,
+      containerRef,
+      canvasRef,
+      imageRef,
+      methods,
+      externalZoom,
+      externalPan,
+      onZoomChange: externalOnZoomChange,
+      onPanChange: externalOnPanChange,
+      onError: externalOnError,
+      onLoad: externalOnLoad,
 
-    // Actions
-    setZoom: setInternalZoom,
-    setPan: setInternalPan,
-    setIsDragging,
-    setDragStart,
-    setImageLoaded,
-    setImageError,
-    setImageDimensions,
-    setSrc,
-    setImageElement,
-    setIsInitialized,
-    setMethods,
-    zoomIn,
-    zoomOut,
-    fillView,
-    fitToView,
-    updateZoom,
-    updatePan,
-  }
+      // Actions
+      setZoom: setInternalZoom,
+      setPan: setInternalPan,
+      setIsDragging,
+      setDragStart,
+      setImageLoaded,
+      setImageError,
+      setImageDimensions,
+      setSrc,
+      setImageElement,
+      setIsInitialized,
+      setMethods,
+      zoomIn,
+      zoomOut,
+      fillView,
+      fitToView,
+      updateZoom,
+      updatePan,
+    }),
+    [
+      currentZoom,
+      currentPan,
+      isDragging,
+      dragStart,
+      imageLoaded,
+      imageError,
+      imageDimensions,
+      imageSrc,
+      isInitialized,
+      methods,
+      externalZoom,
+      externalPan,
+      externalOnZoomChange,
+      externalOnPanChange,
+      externalOnError,
+      externalOnLoad,
+      setInternalZoom,
+      setInternalPan,
+      setIsDragging,
+      setDragStart,
+      setImageLoaded,
+      setImageError,
+      setImageDimensions,
+      setSrc,
+      setImageElement,
+      setIsInitialized,
+      setMethods,
+      zoomIn,
+      zoomOut,
+      fillView,
+      fitToView,
+      updateZoom,
+      updatePan,
+    ],
+  )
 
   return <FilePreviewContext.Provider value={contextValue}>{children}</FilePreviewContext.Provider>
 }

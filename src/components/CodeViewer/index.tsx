@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useRef } from "react"
-import { Copy, Check, Code } from "lucide-react"
+import { Copy, Check, Code, Wand } from "lucide-react"
 import { Button } from "../ui/Button"
 import { BlockDetector } from "./BlockDetector"
 import { LineRenderer } from "./LineRenderer"
@@ -113,6 +113,34 @@ export function CodeViewer({ content, language, fileName, className = "", height
     }
   }
 
+  const formatCode = () => {
+    // Simple formatting logic: Add 2-space indentation for each level
+    const formattedLines: any[] = [];
+    let indentLevel = 0;
+    const indentSize = 2;
+
+    lines.forEach((line) => {
+      line = line.trim();
+      if (!line) {
+        formattedLines.push("");
+        return;
+      }
+
+      const closeBraces = (line.match(/}/g) || []).length;
+      indentLevel = Math.max(0, indentLevel - closeBraces);
+
+      formattedLines.push(" ".repeat(indentLevel * indentSize) + line);
+
+      const openBraces = (line.match(/{/g) || []).length;
+      indentLevel += openBraces;
+    });
+
+    // Update content with formatted version
+    const formattedContent = formattedLines.join("\n");
+    // Note: This is a simple demo. For production, use Prettier or a proper formatter
+    return formattedContent;
+  };
+
   const getLanguageDisplayName = (lang: string): string => {
     const languageMap: { [key: string]: string } = {
       js: "JavaScript",
@@ -148,19 +176,25 @@ export function CodeViewer({ content, language, fileName, className = "", height
             </span>
           )}
         </div>
-        <Button variant="ghost" size="sm" onClick={copyToClipboard} className="flex items-center gap-1 flex-shrink-0">
-          {copied ? (
-            <>
-              <Check className="w-3 h-3 text-green-600" />
-              <span className="text-xs text-green-600">Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-3 h-3" />
-              <span className="text-xs">Copy</span>
-            </>
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" onClick={copyToClipboard} className="flex items-center gap-1 flex-shrink-0">
+            {copied ? (
+              <>
+                <Check className="w-3 h-3 text-green-600" />
+                <span className="text-xs text-green-600">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3 h-3" />
+                <span className="text-xs">Copy</span>
+              </>
+            )}
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => { const formatted = formatCode(); /* Replace content with formatted version here if state management is added */ console.log(formatted); }} className="flex items-center gap-1 flex-shrink-0">
+            <Wand className="w-3 h-3" />
+            <span className="text-xs">Format Code</span>
+          </Button>
+        </div>
       </div>
 
       {/* Code Content */}

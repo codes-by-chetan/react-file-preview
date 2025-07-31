@@ -260,11 +260,11 @@ export function JSONViewer({ content, fileName, className = "" }: JSONViewerProp
   return (
     <div className={`border rounded-lg overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-3 border-b bg-gray-50">
+      <div className="flex items-center justify-between p-3 border-b bg-gray-50 dark:bg-gray-800">
         <div className="flex items-center gap-2">
           <FileText className="w-4 h-4 text-gray-500" />
           <span className="text-sm font-medium">{fileName || "JSON"}</span>
-          <span className="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded">
+          <span className="text-xs text-gray-500 bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">
             {jsonBlocks.length} collapsible blocks
           </span>
         </div>
@@ -298,11 +298,11 @@ export function JSONViewer({ content, fileName, className = "" }: JSONViewerProp
       </div>
 
       {/* JSON Content */}
-      <div className="bg-gray-50" style={{ height: "400px" }}>
+      <div className="bg-gray-50 dark:bg-gray-900" style={{ height: "400px" }}>
         <ScrollArea className="h-full w-full">
           <div className="flex min-w-max">
             {/* Line Numbers */}
-            <div className="bg-gray-100 px-2 py-4 text-xs text-gray-500 font-mono select-none border-r min-w-[60px] flex-shrink-0">
+            <div className="bg-gray-100 dark:bg-gray-700 px-2 py-4 text-xs text-gray-500 dark:text-gray-300 font-mono select-none border-r min-w-[60px] flex-shrink-0">
               {lines.map((_, originalIndex) => {
                 if (isLineInCollapsedBlock(originalIndex)) return null
 
@@ -314,7 +314,7 @@ export function JSONViewer({ content, fileName, className = "" }: JSONViewerProp
                     {block && (
                       <button
                         onClick={() => toggleBlock(block.id)}
-                        className="hover:bg-gray-200 rounded p-0.5 flex-shrink-0"
+                        className="hover:bg-gray-200 dark:hover:bg-gray-600 rounded p-0.5 flex-shrink-0 mr-1"
                         title={`${isCollapsed ? "Expand" : "Collapse"} ${
                           block.type
                         }${block.name ? ` "${block.name}"` : ""}`}
@@ -322,7 +322,7 @@ export function JSONViewer({ content, fileName, className = "" }: JSONViewerProp
                         {isCollapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                       </button>
                     )}
-                    <span className="text-right flex-1 pr-2">{originalIndex + 1}</span>
+                    <span className="text-right flex-1 pr-2 min-w-[40px]">{originalIndex + 1}</span>
                   </div>
                 )
               })}
@@ -363,7 +363,7 @@ export function JSONViewer({ content, fileName, className = "" }: JSONViewerProp
       </div>
 
       {/* Footer */}
-      <div className="px-3 py-2 border-t bg-gray-50 text-xs text-gray-500 flex justify-between">
+      <div className="px-3 py-2 border-t bg-gray-50 dark:bg-gray-800 text-xs text-gray-500 flex justify-between">
         <span>
           {lines.length} lines • {displayContent.length} characters
         </span>

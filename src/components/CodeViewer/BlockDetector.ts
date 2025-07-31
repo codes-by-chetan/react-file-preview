@@ -52,14 +52,12 @@ export class BlockDetector {
       const closeBraces = (fullLine.match(/}/g) || []).length;
       currentBraceCount += openBraces;
 
-      // JSX Block Detection
+      // Enhanced JSX/TSX Block Detection
       if (this.isOpeningTag(fullLine)) {
         const jsxBlock = this.findJSXBlock(this.lines, i);
         if (jsxBlock) {
           blocks.push({
-            id: `${jsxBlock.startLine}-${
-              jsxBlock.endLine
-            }-jsx-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+            id: `${jsxBlock.startLine}-${jsxBlock.endLine}-jsx-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
             startLine: jsxBlock.startLine,
             endLine: jsxBlock.endLine,
             type: "jsx" as CodeBlock["type"],
@@ -88,9 +86,7 @@ export class BlockDetector {
       if (this.isExportStatement(fullLine) && braceStack.length === 0) {
         if (i > 0 && !blocks.some((b) => b.startLine === i)) {
           blocks.push({
-            id: `${i}-${i}-export-${Date.now()}-${Math.random()
-              .toString(36)
-              .substr(2, 5)}`,
+            id: `${i}-${i}-export-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
             startLine: i,
             endLine: i,
             type: "export" as CodeBlock["type"],
@@ -107,9 +103,7 @@ export class BlockDetector {
             const endLine = i;
             if (endLine > block.line) {
               blocks.push({
-                id: `${block.line}-${endLine}-${
-                  block.type
-                }-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+                id: `${block.line}-${endLine}-${block.type}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
                 startLine: block.line,
                 endLine,
                 type: block.type as CodeBlock["type"],
@@ -127,9 +121,7 @@ export class BlockDetector {
       const block = braceStack.pop()!;
       if (this.lines.length - 1 > block.line) {
         blocks.push({
-          id: `${block.line}-${this.lines.length - 1}-${
-            block.type
-          }-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          id: `${block.line}-${this.lines.length - 1}-${block.type}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
           startLine: block.line,
           endLine: this.lines.length - 1,
           type: block.type as CodeBlock["type"],
@@ -142,7 +134,7 @@ export class BlockDetector {
   }
 
   private extractTagName(line: string): string | null {
-    const match = line.match(/^<([a-zA-Z0-9]+)/);
+    const match = line.match(/^<([a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?)/);
     return match ? match[1] : null;
   }
 
@@ -152,14 +144,14 @@ export class BlockDetector {
 
   private isOpeningTag(line: string): boolean {
     return (
-      /^<([a-zA-Z0-9]+)(\s|>)/.test(line) &&
+      /^<([a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?)(\s|>)/.test(line) &&
       !this.isSelfClosing(line) &&
-      !/^<\/[a-zA-Z0-9]+>/.test(line)
+      !/^<\/[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?>/.test(line)
     );
   }
 
   private isClosingTag(line: string): boolean {
-    return /^<\/([a-zA-Z0-9]+)>/.test(line);
+    return /^<\/([a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?)>/.test(line);
   }
 
   private findJSXBlock(
@@ -169,29 +161,22 @@ export class BlockDetector {
     let stack: string[] = [];
     for (let i = startLine; i < lines.length; i++) {
       const line = lines[i].trim();
+      if (line.length === 0) continue; // Skip empty lines
 
       if (this.isOpeningTag(line)) {
         const tagName = this.extractTagName(line);
-        if (tagName) {
-          stack.push(tagName);
-        }
+        if (tagName) stack.push(tagName);
       } else if (this.isClosingTag(line)) {
-        const tagName = line.match(/^<\/([a-zA-Z0-9]+)>/)![1];
+        const tagName = line.match(/^<\/([a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?)>/)![1];
         if (stack.length > 0 && stack[stack.length - 1] === tagName) {
           stack.pop();
-          if (stack.length === 0) {
-            return { startLine, endLine: i };
-          }
+          if (stack.length === 0) return { startLine, endLine: i };
         }
       } else if (this.isSelfClosing(line)) {
-        // Self-closing, do nothing (no stack push/pop needed)
+        // Self-closing, no stack change
       }
-
-      // Edge case: Inline multiple tags in one line like <div><span>Text</span></div>
-      // You can enhance this later to parse per tag in line rather than per line.
     }
-
-    return null; // No closing found
+    return null;
   }
 
   private isExportStatement(line: string): boolean {
@@ -203,6 +188,10 @@ export class BlockDetector {
     lineIndex: number
   ): { type: string; name?: string } | null {
     const trimmed = line.trim();
+
+    if (this.isOpeningTag(trimmed)) {
+      return { type: "jsx", name: this.extractTagName(trimmed) || undefined };
+    }
 
     if (
       trimmed.match(
@@ -234,11 +223,6 @@ export class BlockDetector {
 
     if (this.isSwitchLine(trimmed)) {
       return { type: "switch" };
-    }
-
-    if (this.isOpeningTag(trimmed)) {
-      // Replaced isJSXStart with isOpeningTag
-      return { type: "jsx", name: this.extractTagName(trimmed) || undefined };
     }
 
     if (
@@ -343,11 +327,6 @@ export class BlockDetector {
     return match?.[1] || "variable";
   }
 
-  private extractJSXName(line: string): string {
-    const match = line.match(/^\s*<\s*(\w+)/);
-    return match?.[1] || "jsx";
-  }
-
   private extractAngularMethodName(line: string): string {
     const match = line.match(
       /^\s*(?:public|private|protected)?\s*(ng[A-Z][a-zA-Z]*)/
@@ -382,9 +361,7 @@ export class BlockDetector {
           const block = stack.pop()!;
           if (i > block.line + 1) {
             blocks.push({
-              id: `${block.line}-${i - 1}-${
-                block.type
-              }-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+              id: `${block.line}-${i - 1}-${block.type}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
               startLine: block.line,
               endLine: i - 1,
               type: block.type as CodeBlock["type"],
@@ -409,9 +386,7 @@ export class BlockDetector {
       const block = stack.pop()!;
       if (this.lines.length - 1 > block.line + 1) {
         blocks.push({
-          id: `${block.line}-${this.lines.length - 1}-${
-            block.type
-          }-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          id: `${block.line}-${this.lines.length - 1}-${block.type}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
           startLine: block.line,
           endLine: this.lines.length - 1,
           type: block.type as CodeBlock["type"],

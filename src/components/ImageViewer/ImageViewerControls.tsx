@@ -3,14 +3,16 @@
 import type React from "react"
 import { ZoomIn, ZoomOut, Maximize2, Expand } from "lucide-react"
 import { useFilePreview } from "../../contexts/FilePreviewContext"
+import { Children, cloneElement } from "react"
 
 export interface ImageViewerButtonProps {
   className?: string
   style?: React.CSSProperties
   disabled?: boolean
-  size?: "sm" | "md" | "lg" |"xs"
+  size?: "xs" | "sm" | "md" | "lg"
   variant?: "default" | "ghost" | "outline"
   showTitle?: boolean
+  children?: React.ReactNode // Added to allow custom icons
 }
 
 const buttonSizes = {
@@ -40,6 +42,7 @@ const buttonVariants = {
   outline: "border border-gray-300 hover:bg-gray-50",
 }
 
+// Generic ImageViewerButton component for modularity
 export const ImageViewerZoomInButton: React.FC<ImageViewerButtonProps> = ({
   className = "",
   style,
@@ -47,20 +50,34 @@ export const ImageViewerZoomInButton: React.FC<ImageViewerButtonProps> = ({
   size = "md",
   variant = "default",
   showTitle = true,
+  children,
 }) => {
   const { zoom, zoomIn } = useFilePreview()
   const isDisabled = disabled || zoom >= 5
-// console.log(iconSizes[size]);
+
+  const btnClass = `${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded-md text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`
+
+  const iconClass = iconSizes[size]
+
+  // Render children if provided, else default icon
+  const renderedIcon = children ? (
+    cloneElement(Children.only(children) as React.ReactElement, {
+      className: `${iconClass} ${(children as any).props.className || ""}`,
+    })
+  ) : (
+    <ZoomIn size={sizes[size]} className={iconClass} />
+  )
 
   return (
     <button
-      onClick={zoomIn}
-      disabled={isDisabled}
-      className={`${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className} `}
+      className={btnClass}
       style={style}
+      disabled={isDisabled}
+      onClick={zoomIn}
       title={showTitle ? "Zoom In" : undefined}
+      aria-label="Zoom In"
     >
-      <ZoomIn size={sizes[size]} />
+      {renderedIcon}
     </button>
   )
 }
@@ -72,19 +89,34 @@ export const ImageViewerZoomOutButton: React.FC<ImageViewerButtonProps> = ({
   size = "md",
   variant = "default",
   showTitle = false,
+  children,
 }) => {
   const { zoom, zoomOut } = useFilePreview()
   const isDisabled = disabled || zoom <= 0.1
 
+  const btnClass = `${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded-md text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`
+
+  const iconClass = iconSizes[size]
+
+  // Render children if provided, else default icon
+  const renderedIcon = children ? (
+    cloneElement(Children.only(children) as React.ReactElement, {
+      className: `${iconClass} ${(children as any).props.className || ""}`,
+    })
+  ) : (
+    <ZoomOut size={sizes[size]} className={iconClass} />
+  )
+
   return (
     <button
-      onClick={zoomOut}
-      disabled={isDisabled}
-      className={`${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={btnClass}
       style={style}
+      disabled={isDisabled}
+      onClick={zoomOut}
       title={showTitle ? "Zoom Out" : undefined}
+      aria-label="Zoom Out"
     >
-      <ZoomOut size={sizes[size]} />
+      {renderedIcon}
     </button>
   )
 }
@@ -96,18 +128,33 @@ export const ImageViewerFillViewButton: React.FC<ImageViewerButtonProps> = ({
   size = "md",
   variant = "default",
   showTitle = false,
+  children,
 }) => {
   const { fillView } = useFilePreview()
 
+  const btnClass = `${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded-md text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`
+
+  const iconClass = iconSizes[size]
+
+  // Render children if provided, else default icon
+  const renderedIcon = children ? (
+    cloneElement(Children.only(children) as React.ReactElement, {
+      className: `${iconClass} ${(children as any).props.className || ""}`,
+    })
+  ) : (
+    <Maximize2 size={sizes[size]} className={iconClass} />
+  )
+
   return (
     <button
-      onClick={fillView}
-      disabled={disabled}
-      className={`${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={btnClass}
       style={style}
-      title={showTitle ? "Fill View (1:1)" : undefined}
+      disabled={disabled}
+      onClick={fillView}
+      title={showTitle ? "Fill View" : undefined}
+      aria-label="Fill View"
     >
-      <Expand size={sizes[size]} />
+      {renderedIcon}
     </button>
   )
 }
@@ -119,18 +166,33 @@ export const ImageViewerFitToViewButton: React.FC<ImageViewerButtonProps> = ({
   size = "md",
   variant = "default",
   showTitle = false,
+  children,
 }) => {
   const { fitToView } = useFilePreview()
 
+  const btnClass = `${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded-md text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`
+
+  const iconClass = iconSizes[size]
+
+  // Render children if provided, else default icon
+  const renderedIcon = children ? (
+    cloneElement(Children.only(children) as React.ReactElement, {
+      className: `${iconClass} ${(children as any).props.className || ""}`,
+    })
+  ) : (
+    <Expand size={sizes[size]} className={iconClass} />
+  )
+
   return (
     <button
-      onClick={fitToView}
-      disabled={disabled}
-      className={`${buttonSizes[size]} ${buttonVariants[variant]} flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={btnClass}
       style={style}
+      disabled={disabled}
+      onClick={fitToView}
       title={showTitle ? "Fit to View" : undefined}
+      aria-label="Fit to View"
     >
-      <Maximize2 size={sizes[size]} />
+      {renderedIcon}
     </button>
   )
 }

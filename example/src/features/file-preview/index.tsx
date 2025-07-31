@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
   FilePreviewComponent,
   ImageViewer,
@@ -18,28 +18,30 @@ import {
   FilePreviewProvider,
   ImageViewerFillViewButton,
   ImageViewerFitToViewButton,
-} from "../../../../dist"
+} from '../../../../dist'
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const sampleFiles = [
   {
-    name: "sample-image.jpg",
-    url: "https://picsum.photos/800/600",
-    type: "image",
+    name: 'sample-image.jpg',
+    url: 'https://picsum.photos/800/600',
+    type: 'image',
   },
   {
-    name: "sample-document.pdf",
-    url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-    type: "document",
+    name: 'sample-document.pdf',
+    url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+    type: 'document',
   },
   {
-    name: "sample-video.mp4",
-    url: "https://www.w3schools.com/html/mov_bbb.mp4",
-    type: "video",
+    name: 'sample-video.mp4',
+    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    type: 'video',
   },
   {
-    name: "sample-audio.mp3",
-    url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
-    type: "audio",
+    name: 'sample-audio.mp3',
+    url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav',
+    type: 'audio',
   },
 ]
 
@@ -467,220 +469,260 @@ function FilePreview() {
     y: 0,
   })
 
-  console.log("rendered the page");
-  
+  console.log('rendered the page')
 
   return (
-    <div className="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-6 text-center text-2xl font-bold sm:mb-8 sm:text-3xl">
+    <div className='container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8'>
+      <h1 className='mb-6 text-center text-2xl font-bold sm:mb-8 sm:text-3xl'>
         React File Preview Examples - Modular Components
       </h1>
 
-      <div className="space-y-8 sm:space-y-12">
+      <div className='space-y-8 sm:space-y-12'>
         {/* NEW: Modular Image Viewer Showcase */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">🎨 Modular Image Viewer Components</h2>
-          <p className="mb-6 text-gray-600">
-            Build custom image viewers using compound components with full styling control. Images now automatically fit
-            to view on load.
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
+            🎨 Modular Image Viewer Components
+          </h2>
+          <p className='mb-6 text-gray-600'>
+            Build custom image viewers using compound components with full
+            styling control. Images now automatically fit to view on load.
           </p>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
             {/* Custom Styled Toolbar */}
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Custom Styled Toolbar (Top-Left)</h3>
-              <div className="h-64">
-                <FilePreviewProvider>
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>
+                Custom Styled Toolbar (Top-Left)
+              </h3>
+              <div className='h-64'>
+               
                   <ImageViewer
-                    src="https://picsum.photos/800/600"
-                    alt="Custom toolbar image"
+                    src='https://picsum.photos/800/600'
+                    alt='Custom toolbar image'
                     methods={{
-                      onZoomIn: () => console.log("🔍 Custom Zoom In"),
-                      onZoomOut: () => console.log("🔍 Custom Zoom Out"),
-                      onFillView: () => console.log("🔄 Custom Fill View"),
-                      onFitToView: () => console.log("📐 Custom Fit to View"),
+                      onZoomIn: () => console.log('🔍 Custom Zoom In'),
+                      onZoomOut: () => console.log('🔍 Custom Zoom Out'),
+                      onFillView: () => console.log('🔄 Custom Fill View'),
+                      onFitToView: () => console.log('📐 Custom Fit to View'),
                     }}
-                    className="bg-gray-100 text-black dark:bg-gray-900 dark:text-white"
+                    className='text-black dark:bg-gray-900 dark:text-white'
                   >
                     <ImageViewerContent allowPan={true} allowZoom={true} />
                     <ImageViewerToolbar
-                      position="top-left"
-                      className="left-5 bg-gradient-to-r !p-1 from-purple-600 to-blue-600 text-white shadow-xl"
+                      position='top-left'
+                      className='left-5 bg-gradient-to-r from-purple-600 to-blue-600 !p-1 text-white shadow-xl'
                     >
                       <ImageViewerZoomInButton
-                        size="xs"
-                        variant="ghost"
-                        className="text-white hover:bg-white/20"
+                        size='xs'
+                        variant='ghost'
+                        className='text-white hover:bg-white/20'
                         showTitle={true}
                       />
                       <ImageViewerZoomOutButton
-                        size="xs"
-                        variant="ghost"
-                        className="text-white hover:bg-white/20"
+                        size='xs'
+                        variant='ghost'
+                        className='text-white hover:bg-white/20'
                         showTitle={true}
                       />
                       <ImageViewerFitToViewButton
-                        size="xs"
-                        variant="ghost"
-                        className="text-white hover:bg-white/20"
+                        size='xs'
+                        variant='ghost'
+                        className='text-white hover:bg-white/20'
                         showTitle={true}
                       />
                       <ImageViewerFillViewButton
-                        size="xs"
-                        variant="ghost"
-                        className="text-white hover:bg-white/20"
+                        size='xs'
+                        variant='ghost'
+                        className='text-white hover:bg-white/20'
                         showTitle={true}
                       />
                     </ImageViewerToolbar>
                     <ImageViewerZoomIndicator
-                      position="bottom-left"
-                      className="bottom-2 left-5 bg-foreground text-[10px] text-center  w-7 h-7 !p-0.5"
+                      position='bottom-left'
+                      className='bg-foreground/10 !text-foreground bottom-2 left-5 w-[50px] text-center text-[10px] !backdrop-blur-sm'
                     />
                   </ImageViewer>
-                </FilePreviewProvider>
+                
               </div>
             </div>
 
             {/* Minimal Controls */}
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Minimal Controls (Bottom-Right)</h3>
-              <div className="h-64">
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>
+                Minimal Controls (Bottom-Right)
+              </h3>
+              <div className='h-64'>
                 <FilePreviewProvider>
-                  <ImageViewer src="https://picsum.photos/600/400" alt="Minimal controls image">
+                  <ImageViewer
+                    src='https://picsum.photos/600/400'
+                    alt='Minimal controls image'
+                  >
                     <ImageViewerContent allowPan={true} allowZoom={true} />
                     <ImageViewerToolbar
-                      position="bottom-right"
-                      className="right-2 bottom-2 flex-row !gap-0.5 bg-black/80 backdrop-blur-sm !p-1"
+                      position='bottom-right'
+                      className='right-2 bottom-2 flex-row !gap-0.5 bg-black/80 !p-1 backdrop-blur-sm'
                     >
-                      <ImageViewerZoomInButton size="xs" variant="ghost" className="text-white  hover:bg-white/20" />
+                      <ImageViewerZoomInButton
+                        size='xs'
+                        variant='ghost'
+                        className='text-white hover:bg-white/20'
+                      />
                       <ImageViewerZoomIndicator
-                      position="top-right"
-                      className="text-xs text-white rounded-md static min-w-[40px] !px-0.5"
-                      format={(zoom) => `${Math.round(zoom * 100)}%`}
-                    />
-                      <ImageViewerZoomOutButton size="xs" variant="ghost" className="text-white hover:bg-white/20" />
+                        position='top-right'
+                        className='static min-w-[40px] rounded-md !px-0.5 text-xs text-white'
+                        format={(zoom) => `${Math.round(zoom * 100)}%`}
+                      />
+                      <ImageViewerZoomOutButton
+                        size='xs'
+                        variant='ghost'
+                        className='text-white hover:bg-white/20'
+                      />
                     </ImageViewerToolbar>
-                    
                   </ImageViewer>
                 </FilePreviewProvider>
               </div>
             </div>
 
             {/* All Controls with Custom Styling */}
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">All Controls with Custom Styling</h3>
-              <div className="h-64">
-                <FilePreviewProvider>
-                  <ImageViewer src="https://picsum.photos/900/600" alt="All controls image">
-                    <ImageViewerContent allowPan={true} allowZoom={true} className="rounded-lg" />
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>
+                All Controls with Custom Styling
+              </h3>
+              <div className='h-64'>
+                
+                  <ImageViewer
+                    src='https://picsum.photos/900/600'
+                    alt='All controls image'
+                  >
+                    <ImageViewerContent
+                      allowPan={true}
+                      allowZoom={true}
+                      className='rounded-lg'
+                    />
                     <ImageViewerToolbar
-                      position="top-right"
-                      className="border border-gray-200 bg-white/95 shadow-2xl backdrop-blur-md"
+                      position='top-right'
+                      className='dark:bg-background border border-gray-200 bg-white/95 shadow-2xl backdrop-blur-md'
                     >
                       <ImageViewerZoomInButton
-                        size="md"
-                        variant="outline"
-                        className="border-blue-200 hover:bg-blue-50"
+                        size='md'
+                        variant='outline'
+                        className='border-blue-200 hover:bg-blue-50'
                       />
                       <ImageViewerZoomOutButton
-                        size="md"
-                        variant="outline"
-                        className="border-blue-200 hover:bg-blue-50"
+                        size='md'
+                        variant='outline'
+                        className='border-blue-200 hover:bg-blue-50'
                       />
                       <ImageViewerFitToViewButton
-                        size="md"
-                        variant="outline"
-                        className="border-green-200 hover:bg-green-50"
+                        size='md'
+                        variant='outline'
+                        className='border-green-200 hover:bg-green-50'
                       />
                       <ImageViewerFillViewButton
-                        size="md"
-                        variant="outline"
-                        className="border-red-200 hover:bg-red-50"
+                        size='md'
+                        variant='outline'
+                        className='border-red-200 hover:bg-red-50'
                       />
                     </ImageViewerToolbar>
                     <ImageViewerZoomIndicator
-                      position="bottom-right"
-                      className="bg-gradient-to-r from-orange-500 to-red-500 font-semibold text-white shadow-lg"
+                      position='bottom-right'
+                      className='right-2 bottom-2 bg-gradient-to-r from-orange-500 to-red-500 text-xs font-semibold text-white shadow-lg'
                       format={(zoom) => `${Math.round(zoom * 100)}% zoom`}
                     />
                   </ImageViewer>
-                </FilePreviewProvider>
+                
               </div>
             </div>
 
             {/* Controlled Image Viewer */}
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Controlled Image Viewer</h3>
-              <FilePreviewProvider>
-                <div className="mb-4 space-y-2">
-                  <div className="flex items-center gap-4">
-                    <label className="text-sm font-medium">Zoom: {Math.round(imageZoom * 100)}%</label>
-                    <input
-                      type="range"
-                      min="0.1"
-                      max="3"
-                      step="0.1"
-                      value={imageZoom}
-                      onChange={(e) => setImageZoom(Number.parseFloat(e.target.value))}
-                      className="flex-1"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setImageZoom(1)}
-                      className="rounded bg-blue-600 px-3 py-1 text-xs text-white hover:bg-blue-700"
-                    >
-                      Fill View
-                    </button>
-                    <button
-                      onClick={() => setImagePan({ x: 0, y: 0 })}
-                      className="rounded bg-green-600 px-3 py-1 text-xs text-white hover:bg-green-700"
-                    >
-                      Reset Pan
-                    </button>
-                  </div>
-                </div>
-                <div className="h-64">
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>
+                Controlled Image Viewer
+              </h3>
+              
+                <div className='h-64'>
                   <ImageViewer
-                    src="https://picsum.photos/1200/800"
-                    alt="Controlled image"
+                    src='https://picsum.photos/1200/800'
+                    alt='Controlled image'
                     zoom={imageZoom}
                     onZoomChange={setImageZoom}
                     pan={imagePan}
                     onPanChange={setImagePan}
                     methods={{
-                      onZoomIn: () => console.log("External: Zoom in clicked"),
-                      onZoomOut: () => console.log("External: Zoom out clicked"),
-                      onFillView: () => console.log("External: Fill view clicked"),
-                      onZoomChange: (zoom) => console.log("External: Zoom changed:", zoom),
-                      onPanChange: (pan) => console.log("External: Pan changed:", pan),
+                      onZoomIn: () => console.log('External: Zoom in clicked'),
+                      onZoomOut: () =>
+                        console.log('External: Zoom out clicked'),
+                      onFillView: () =>
+                        console.log('External: Fill view clicked'),
+                      onZoomChange: (zoom) =>
+                        console.log('External: Zoom changed:', zoom),
+                      onPanChange: (pan) =>
+                        console.log('External: Pan changed:', pan),
                     }}
                   >
                     <ImageViewerContent allowPan={true} allowZoom={true} />
-                    <ImageViewerToolbar position="top-right">
+                    <ImageViewerToolbar position='top-right'>
                       <ImageViewerZoomInButton />
                       <ImageViewerZoomOutButton />
                       <ImageViewerFitToViewButton />
                       <ImageViewerFillViewButton />
                     </ImageViewerToolbar>
-                    <ImageViewerZoomIndicator position="bottom-right" />
+                    <ImageViewerZoomIndicator
+                      position='bottom-right'
+                      className='right-2 bottom-2 !text-black'
+                    />
                   </ImageViewer>
                 </div>
-              </FilePreviewProvider>
+                <div className='mt-4 space-y-2'>
+                  <div className='flex items-center gap-4'>
+                    <label className='text-sm font-medium'>
+                      Zoom: {Math.round(imageZoom * 100)}%
+                    </label>
+                    <input
+                      type='range'
+                      min='0.1'
+                      max='3'
+                      step='0.1'
+                      value={imageZoom}
+                      onChange={(e) =>
+                        setImageZoom(Number.parseFloat(e.target.value))
+                      }
+                      className='flex-1'
+                    />
+                  </div>
+                  <div className='flex gap-2'>
+                    <button
+                      onClick={() => setImageZoom(1)}
+                      className='rounded bg-blue-600 px-3 py-1 text-xs text-white hover:bg-blue-700'
+                    >
+                      Fill View
+                    </button>
+                    <button
+                      onClick={() => setImagePan({ x: 0, y: 0 })}
+                      className='rounded bg-green-600 px-3 py-1 text-xs text-white hover:bg-green-700'
+                    >
+                      Reset Pan
+                    </button>
+                  </div>
+                </div>
+              
             </div>
           </div>
         </section>
 
         {/* Enhanced CSV Viewer with Filtering */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
             Enhanced CSV Viewer with Filtering & Search
           </h2>
 
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-3 text-lg font-medium">Interactive CSV Data Table</h3>
-            <p className="mb-4 text-sm text-gray-600">
-              Try searching, filtering by columns, and sorting by clicking column headers.
+          <div className='rounded-lg border p-4'>
+            <h3 className='mb-3 text-lg font-medium'>
+              Interactive CSV Data Table
+            </h3>
+            <p className='mb-4 text-sm text-gray-600'>
+              Try searching, filtering by columns, and sorting by clicking
+              column headers.
             </p>
             <FilePreviewProvider>
               <CSVViewer content={csvContent} />
@@ -690,38 +732,52 @@ function FilePreview() {
 
         {/* Enhanced Text Viewers with Syntax Highlighting */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">Enhanced Text Viewers</h2>
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
+            Enhanced Text Viewers
+          </h2>
 
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+          <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
             {/* Markdown with Preview */}
             <div>
-              <h3 className="mb-3 text-lg font-medium">Markdown with Live Preview</h3>
+              <h3 className='mb-3 text-lg font-medium'>
+                Markdown with Live Preview
+              </h3>
               <FilePreviewProvider>
-                <TextViewer content={markdownContent} fileExtension="md" />
+                <TextViewer content={markdownContent} fileExtension='md' />
               </FilePreviewProvider>
             </div>
 
             {/* JavaScript with Syntax Highlighting */}
             <div>
-              <h3 className="mb-3 text-lg font-medium">JavaScript with Syntax Highlighting</h3>
+              <h3 className='mb-3 text-lg font-medium'>
+                JavaScript with Syntax Highlighting
+              </h3>
               <FilePreviewProvider>
-                <TextViewer className="!max-h-[450px]" content={javascriptCode} fileExtension="js" />
+                <TextViewer
+                  className='!max-h-[450px]'
+                  content={javascriptCode}
+                  fileExtension='js'
+                />
               </FilePreviewProvider>
             </div>
 
             {/* TypeScript with Syntax Highlighting */}
             <div>
-              <h3 className="mb-3 text-lg font-medium">TypeScript with Syntax Highlighting</h3>
+              <h3 className='mb-3 text-lg font-medium'>
+                TypeScript with Syntax Highlighting
+              </h3>
               <FilePreviewProvider>
-                <TextViewer content={typescriptCode} fileExtension="ts" />
+                <TextViewer content={typescriptCode} fileExtension='ts' />
               </FilePreviewProvider>
             </div>
 
             {/* Python with Syntax Highlighting */}
             <div>
-              <h3 className="mb-3 text-lg font-medium">Python with Syntax Highlighting</h3>
+              <h3 className='mb-3 text-lg font-medium'>
+                Python with Syntax Highlighting
+              </h3>
               <FilePreviewProvider>
-                <TextViewer content={pythonCode} fileExtension="py" />
+                <TextViewer content={pythonCode} fileExtension='py' />
               </FilePreviewProvider>
             </div>
           </div>
@@ -729,10 +785,14 @@ function FilePreview() {
 
         {/* Enhanced JSON Viewer */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">Enhanced JSON Viewer</h2>
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
+            Enhanced JSON Viewer
+          </h2>
 
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-3 text-lg font-medium">Formatted JSON with Syntax Highlighting</h3>
+          <div className='rounded-lg border p-4'>
+            <h3 className='mb-3 text-lg font-medium'>
+              Formatted JSON with Syntax Highlighting
+            </h3>
             <FilePreviewProvider>
               <JSONViewer content={jsonContent} />
             </FilePreviewProvider>
@@ -741,15 +801,17 @@ function FilePreview() {
 
         {/* Enhanced Video Viewer */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">Enhanced Video Viewer</h2>
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
+            Enhanced Video Viewer
+          </h2>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Full Controls Video</h3>
-              <div className="h-64">
+          <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>Full Controls Video</h3>
+              <div className='h-64'>
                 <FilePreviewProvider>
                   <VideoViewer
-                    src="https://www.w3schools.com/html/mov_bbb.mp4"
+                    src='https://www.w3schools.com/html/mov_bbb.mp4'
                     controls={{
                       showControls: true,
                       autoPlay: false,
@@ -757,22 +819,25 @@ function FilePreview() {
                       muted: false,
                     }}
                     methods={{
-                      onPlay: () => console.log("Video started playing"),
-                      onPause: () => console.log("Video paused"),
-                      onTimeUpdate: (time) => console.log("Time update:", time),
-                      onVolumeChange: (volume) => console.log("Volume changed:", volume),
+                      onPlay: () => console.log('Video started playing'),
+                      onPause: () => console.log('Video paused'),
+                      onTimeUpdate: (time) => console.log('Time update:', time),
+                      onVolumeChange: (volume) =>
+                        console.log('Volume changed:', volume),
                     }}
                   />
                 </FilePreviewProvider>
               </div>
             </div>
 
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Auto-play Muted Video</h3>
-              <div className="h-64">
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>
+                Auto-play Muted Video
+              </h3>
+              <div className='h-64'>
                 <FilePreviewProvider>
                   <VideoViewer
-                    src="https://www.w3schools.com/html/mov_bbb.mp4"
+                    src='https://www.w3schools.com/html/mov_bbb.mp4'
                     controls={{
                       showControls: true,
                       autoPlay: true,
@@ -788,38 +853,40 @@ function FilePreview() {
 
         {/* Enhanced Audio Viewer */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">Enhanced Audio Viewer</h2>
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
+            Enhanced Audio Viewer
+          </h2>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Full Controls Audio</h3>
-              <div className="h-48">
+          <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>Full Controls Audio</h3>
+              <div className='h-48'>
                 <FilePreviewProvider>
                   <AudioViewer
-                    src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
-                    fileName="sample-audio.wav"
+                    src='https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+                    fileName='sample-audio.wav'
                     controls={{
                       showControls: true,
                       autoPlay: false,
                       loop: false,
                     }}
                     methods={{
-                      onPlay: () => console.log("Audio started playing"),
-                      onPause: () => console.log("Audio paused"),
-                      onTimeUpdate: (time) => console.log("Audio time:", time),
+                      onPlay: () => console.log('Audio started playing'),
+                      onPause: () => console.log('Audio paused'),
+                      onTimeUpdate: (time) => console.log('Audio time:', time),
                     }}
                   />
                 </FilePreviewProvider>
               </div>
             </div>
 
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-3 text-lg font-medium">Loop Audio</h3>
-              <div className="h-48">
+            <div className='rounded-lg border p-4'>
+              <h3 className='mb-3 text-lg font-medium'>Loop Audio</h3>
+              <div className='h-48'>
                 <FilePreviewProvider>
                   <AudioViewer
-                    src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
-                    fileName="loop-audio.wav"
+                    src='https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+                    fileName='loop-audio.wav'
                     controls={{
                       showControls: true,
                       loop: true,
@@ -833,20 +900,25 @@ function FilePreview() {
 
         {/* All File Types Demo */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
             All File Types Preview (Using FilePreviewComponent)
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
+          <div className='grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2'>
             {sampleFiles.map((file, index) => (
-              <div key={index} className="rounded-lg border p-3 shadow-sm sm:p-4">
-                <h3 className="mb-3 text-base font-medium sm:text-lg">{file.name}</h3>
+              <div
+                key={index}
+                className='rounded-lg border p-3 shadow-sm sm:p-4'
+              >
+                <h3 className='mb-3 text-base font-medium sm:text-lg'>
+                  {file.name}
+                </h3>
                 <FilePreviewProvider>
                   <FilePreviewComponent
                     src={file.url}
                     fileName={file.name}
-                    height="300px"
-                    onError={(error: any) => console.error("Error:", error)}
-                    onLoad={() => console.log("Loaded:", file.name)}
+                    height='300px'
+                    onError={(error: any) => console.error('Error:', error)}
+                    onLoad={() => console.log('Loaded:', file.name)}
                   />
                 </FilePreviewProvider>
               </div>
@@ -856,39 +928,54 @@ function FilePreview() {
 
         {/* Context Usage Demo */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">🎯 Context-Based State Management</h2>
+          <h2 className='mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl'>
+            🎯 Context-Based State Management
+          </h2>
 
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-3 text-lg font-medium">Efficient State Management with FilePreviewContext</h3>
-            <div className="mb-4 rounded bg-gray-100 p-3 text-sm">
+          <div className='rounded-lg border p-4'>
+            <h3 className='mb-3 text-lg font-medium'>
+              Efficient State Management with FilePreviewContext
+            </h3>
+            <div className='mb-4 rounded bg-gray-100 p-3 text-sm'>
               <p>
-                The modular components use a central context for state management, eliminating prop drilling and
-                enabling efficient component communication. Check the browser console to see method callbacks in action.
+                The modular components use a central context for state
+                management, eliminating prop drilling and enabling efficient
+                component communication. Check the browser console to see method
+                callbacks in action.
               </p>
             </div>
-            <div className="h-64">
+            <div className='h-64'>
               <FilePreviewProvider>
                 <ImageViewer
-                  src="https://picsum.photos/800/600"
-                  alt="Context demo image"
+                  src='https://picsum.photos/800/600'
+                  alt='Context demo image'
                   methods={{
-                    onZoomIn: () => console.log("🎯 Context: Zoom In"),
-                    onZoomOut: () => console.log("🎯 Context: Zoom Out"),
-                    onFillView: () => console.log("🎯 Context: Fill View"),
-                    onZoomChange: (zoom) => console.log("🎯 Context: Zoom changed to:", Math.round(zoom * 100) + "%"),
-                    onPanChange: (pan) => console.log("🎯 Context: Pan changed to:", pan),
+                    onZoomIn: () => console.log('🎯 Context: Zoom In'),
+                    onZoomOut: () => console.log('🎯 Context: Zoom Out'),
+                    onFillView: () => console.log('🎯 Context: Fill View'),
+                    onZoomChange: (zoom) =>
+                      console.log(
+                        '🎯 Context: Zoom changed to:',
+                        Math.round(zoom * 100) + '%'
+                      ),
+                    onPanChange: (pan) =>
+                      console.log('🎯 Context: Pan changed to:', pan),
                   }}
-                  onLoad={() => console.log("🎯 Context: Image loaded successfully")}
-                  onError={(error) => console.error("🎯 Context: Image error:", error)}
+                  onLoad={() =>
+                    console.log('🎯 Context: Image loaded successfully')
+                  }
+                  onError={(error) =>
+                    console.error('🎯 Context: Image error:', error)
+                  }
                 >
                   <ImageViewerContent allowPan={true} allowZoom={true} />
-                  <ImageViewerToolbar position="top-right">
+                  <ImageViewerToolbar position='top-right'>
                     <ImageViewerZoomInButton />
                     <ImageViewerZoomOutButton />
                     <ImageViewerFitToViewButton />
                     <ImageViewerFillViewButton />
                   </ImageViewerToolbar>
-                  <ImageViewerZoomIndicator position="bottom-right" />
+                  <ImageViewerZoomIndicator position='bottom-right' />
                 </ImageViewer>
               </FilePreviewProvider>
             </div>
