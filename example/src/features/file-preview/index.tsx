@@ -505,28 +505,28 @@ function FilePreview() {
                     <ImageViewerContent allowPan={true} allowZoom={true} />
                     <ImageViewerToolbar
                       position="top-left"
-                      className="left-5 bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-xl"
+                      className="left-5 bg-gradient-to-r !p-1 from-purple-600 to-blue-600 text-white shadow-xl"
                     >
                       <ImageViewerZoomInButton
-                        size="lg"
+                        size="xs"
                         variant="ghost"
                         className="text-white hover:bg-white/20"
                         showTitle={true}
                       />
                       <ImageViewerZoomOutButton
-                        size="lg"
+                        size="xs"
                         variant="ghost"
                         className="text-white hover:bg-white/20"
                         showTitle={true}
                       />
                       <ImageViewerFitToViewButton
-                        size="lg"
+                        size="xs"
                         variant="ghost"
                         className="text-white hover:bg-white/20"
                         showTitle={true}
                       />
                       <ImageViewerFillViewButton
-                        size="lg"
+                        size="xs"
                         variant="ghost"
                         className="text-white hover:bg-white/20"
                         showTitle={true}
@@ -534,7 +534,7 @@ function FilePreview() {
                     </ImageViewerToolbar>
                     <ImageViewerZoomIndicator
                       position="bottom-left"
-                      className="bottom-2 left-5 bg-purple-600 text-xs text-white"
+                      className="bottom-2 left-5 bg-foreground text-[10px] text-center  w-7 h-7 !p-0.5"
                     />
                   </ImageViewer>
                 </FilePreviewProvider>
@@ -550,16 +550,17 @@ function FilePreview() {
                     <ImageViewerContent allowPan={true} allowZoom={true} />
                     <ImageViewerToolbar
                       position="bottom-right"
-                      className="right-2 bottom-2 flex-row bg-black/80 backdrop-blur-sm"
+                      className="right-2 bottom-2 flex-row !gap-0.5 bg-black/80 backdrop-blur-sm !p-1"
                     >
                       <ImageViewerZoomInButton size="xs" variant="ghost" className="text-white  hover:bg-white/20" />
-                      <ImageViewerZoomOutButton size="xs" variant="ghost" className="text-white hover:bg-white/20" />
-                    </ImageViewerToolbar>
-                    <ImageViewerZoomIndicator
+                      <ImageViewerZoomIndicator
                       position="top-right"
-                      className="bg-green-600 text-xs text-white"
+                      className="text-xs text-white rounded-md static min-w-[40px] !px-0.5"
                       format={(zoom) => `${Math.round(zoom * 100)}%`}
                     />
+                      <ImageViewerZoomOutButton size="xs" variant="ghost" className="text-white hover:bg-white/20" />
+                    </ImageViewerToolbar>
+                    
                   </ImageViewer>
                 </FilePreviewProvider>
               </div>

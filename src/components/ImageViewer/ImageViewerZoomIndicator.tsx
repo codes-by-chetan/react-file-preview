@@ -29,10 +29,10 @@ export const ImageViewerZoomIndicator: React.FC<ImageViewerZoomIndicatorProps> =
 
   return (
     <div
-      className={`absolute ${positionClasses[position]} bg-black/70 text-white px-3 py-1 rounded-full text-sm z-10 ${className}`}
+      className={`absolute flex justify-center items-center ${positionClasses[position]} bg-black/70 text-white px-3 py-1 rounded-full text-sm z-10 ${className}`}
       style={style}
     >
-      {format(zoom)}
+      <span className="text-center">{format(zoom)}</span>
     </div>
   )
 }

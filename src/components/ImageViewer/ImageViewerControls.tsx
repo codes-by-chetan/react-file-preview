@@ -15,9 +15,9 @@ export interface ImageViewerButtonProps {
 
 const buttonSizes = {
   xs: "p-0.5 w-6 h-6",
-  sm: "p-1.5 w-7 h-7",
-  md: "p-2 w-8 h-8",
-  lg: "p-2.5 w-9 h-9",
+  sm: "p-1 w-8 h-8",
+  md: "p-1 w-9 h-9",
+  lg: "p-2 w-10 h-10",
 }
 
 const iconSizes = {
@@ -46,7 +46,7 @@ export const ImageViewerZoomInButton: React.FC<ImageViewerButtonProps> = ({
   disabled,
   size = "md",
   variant = "default",
-  showTitle = false,
+  showTitle = true,
 }) => {
   const { zoom, zoomIn } = useFilePreview()
   const isDisabled = disabled || zoom >= 5
