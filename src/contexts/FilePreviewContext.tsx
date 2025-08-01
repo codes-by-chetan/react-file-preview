@@ -15,9 +15,9 @@ export interface ImageViewerState {
   imageSrc: string
   hasError: boolean
   isInitialized: boolean
-  containerRef: React.RefObject<HTMLDivElement>
-  canvasRef: React.RefObject<HTMLCanvasElement>
-  imageRef: React.RefObject<HTMLImageElement>
+  containerRef: React.RefObject<HTMLDivElement|null>
+  canvasRef: React.RefObject<HTMLCanvasElement|null>
+  imageRef: React.RefObject<HTMLImageElement|null>
 }
 
 export interface ImageViewerActions {
