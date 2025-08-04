@@ -126,13 +126,47 @@ export interface OfficeViewerProps extends BaseViewerProps, ContentSource {}
 export interface TextViewerProps extends BaseViewerProps {
   content: string
   fileExtension: string
-  height?: string;
+  height?: string
 }
 
 export interface JSONViewerProps extends BaseViewerProps {
   content: string
 }
 
+// CSV Viewer Types
+export interface CSVData {
+  headers: string[]
+  rows: string[][]
+}
+
 export interface CSVViewerProps extends BaseViewerProps {
   content: string
+}
+
+export interface CSVViewerHeaderProps {
+  searchTerm: string
+  onSearchChange: (value: string) => void
+  showFilters: boolean
+  onToggleFilters: () => void
+  onClearAllFilters: () => void
+  hasActiveFilters: boolean
+  resultsInfo: string
+}
+
+export interface CSVViewerColumnFiltersProps {
+  headers: string[]
+  columnFilters: { [key: number]: string }
+  onColumnFilterChange: (columnIndex: number, value: string) => void
+}
+
+export interface CSVViewerTableProps {
+  headers: string[]
+  data: string[][]
+  sortColumn: number | null
+  sortDirection: "asc" | "desc"
+  onSort: (columnIndex: number) => void
+}
+
+export interface CSVViewerEmptyStateProps {
+  onClearFilters: () => void
 }
